@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class PatientNotes extends Model
 {
     use HasFactory;
-
+    
+    protected $connection = 'sqlsrv';
     protected $table = 'PatientNotes';
     protected $primaryKey = 'ID';
 

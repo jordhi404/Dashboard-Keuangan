@@ -2,40 +2,56 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Bed;
+use Barryvdh\Debugbar\Facades\Debugbar;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-
 
 class BedController extends Controller
 {
-    // Eloquent ORM X Eager Loading untuk keseimbangan efisiensi.
-    public function index(Request $request)
+    public function index()
     {
-        // Aktifkan query log.
-        DB::enableQueryLog();
-
         // Mengambil data dari database.
-        $beds = Bed::with(['patient' => function($query) {
-            $query->select('MRN', 'HomeAddress');
-        }, 'patientNotes' => function($query) {
-            $query->select('MRN', 'Notes');
-        }])
-            ->where('IsDeleted', 0)
-            ->orderBy('BedID')
-            ->get();
+        $beds = Bed::select(
+            'a.RegistrationNo',
+            'a.MedicalNo',
+            'a.PatientName',
+            'p.HomeAddress',
+            'a.BusinessPartnerName',
+            'r.ChargeClassName',
+            'a.BedCode',
+            'a.BedStatus',
+            'a.ParamedicName',
+            DB::raw('
+                CASE 
+                    WHEN cv.PlanDischargeTime IS NULL
+                    THEN CAST(cv.PlanDischargeDate AS VARCHAR) + CAST(cv.PlanDischargeTime AS VARCHAR)
+                    ELSE CAST(cv.PlanDischargeDate AS DATETIME) + CAST(cv.PlanDischargeTime AS TIME)
+                END AS RencanaPulang
+            '),
+            DB::raw('
+                CASE 
+                    WHEN sc.StandardCodeName = \'\' OR sc.StandardCodeName IS NULL
+                    THEN \'\'
+                    ELSE sc.StandardCodeName
+                END AS Keterangan
+            '),
+            'a.RegistrationID'
+        )
+        ->from('vBed as a')
+        ->leftJoin('vPatient as p', 'p.MRN', '=', 'a.MRN')
+        ->leftJoin('PatientNotes as pn', 'pn.MRN', '=', 'a.MRN')
+        ->leftJoin('vRegistration as r', 'r.RegistrationID', '=', 'a.RegistrationID')
+        ->leftJoin('ConsultVisit as cv', 'cv.RegistrationID', '=', 'r.RegistrationID')
+        ->leftJoin('StandardCode as sc', 'sc.StandardCodeID', '=', 'cv.GCPlanDischargeNotesType')
+        ->where('a.IsDeleted', 0)
+        ->where('a.RegistrationID')
+        ->where('cv.PlanDischargeDate')
+        ->where('r.GCRegistrationStatus', '<>', 'X020^006')
+        ->orderBy('a.BedCode')
+        ->distinct()
+        ->get();
 
-        // Menampilkan pencatatan eksekusi query.
-        $queryLog = DB::getQueryLog(); 
-        
-        // Ambil waktu eksekusi dari query log pertama.
-        $executionTime = isset($queryLog[0]['time']) ? $queryLog[0]['time'] : 'Tidak ada data';
-
-        // Format query Log.
-        Log::info('Eksekusi Query Log: ' . $executionTime . ' ms');
-
-        // Menampilkan halaman dashboard.
-        return view('Keuangan.index', compact('beds', 'executionTime'));
+        return view('Keuangan_lama.index', compact('beds'));
     }
 }

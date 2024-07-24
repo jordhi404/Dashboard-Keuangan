@@ -9,7 +9,9 @@ class Bed extends Model
 {
     use HasFactory;
 
-    protected $table = 'vBed';
+    protected $connection = 'sqlsrv';
+    protected $table = 'Bed';
+    protected $primaryKey = 'BedID';
 
     public function patient()
     {
@@ -19,5 +21,10 @@ class Bed extends Model
     public function patientNotes()
     {
         return $this->hasMany(PatientNotes::class, 'MRN', 'MRN');
+    }
+
+    public function registration()
+    {
+        return $this->belongsTo(Registration::class, 'RegistrationID', 'RegistrationID');
     }
 }

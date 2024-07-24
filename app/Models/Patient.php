@@ -9,7 +9,8 @@ class Patient extends Model
 {
     use HasFactory;
 
-    protected $table = 'vPatient';
+    protected $connection = 'sqlsrv';
+    protected $table = 'Patient';
     protected $primaryKey = 'MRN';
 
     public function bed()

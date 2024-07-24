@@ -1,0 +1,29 @@
+body {
+    background: linear-gradient(60deg, white, aquamarine, aqua);
+    font-family: Arial, sans-serif;
+    background-size: cover;
+    display: flex;
+    height: 100svh;
+    justify-content: center;
+}
+.glass-card{
+    background: rgba(255, 252, 252, 0.856);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.7);
+    width: fit-content;
+    height: fit-content;
+    margin-left: 200px;
+}
+.glass-card .card-body{
+    background: transparent;
+}
+button{
+    margin: 10px;
+    margin-left: 1px;
+}
+.form-group{
+    margin-bottom: 10px;
+}
