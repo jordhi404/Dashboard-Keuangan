@@ -3,40 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Keuangan</title>
+    <title>Detail Pasien</title>
     <link rel="icon" href="{{ asset('Logo_img/logo_rs.jpg') }}" type="image/x-icon">
     
     <!-- CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <style>
-        .detail-container {
-            margin: 20px;
-        }
-        .table {
-            width: 100%;
-            margin-bottom: 1rem;
-            background-color: transparent;
-        }
-        .table th, .table td {
-            padding: .75rem;
-            vertical-align: top;
-            border-top: 1px solid #dee2e6;
-            font-size: 20px;
-        }
-        .table thead th {
-            vertical-align: bottom;
-            border-bottom: 2px solid #dee2e6;
-        }
-        .table tbody + tbody {
-            border-top: 2px solid #dee2e6;
-            font-family: Arial;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('CSS/detail-styles.css') }}">
 </head>
 <body>
     <div class="container detail-container">
-        <h2>Detail Pasien</h2>
-        <table class="table table-striped">
+        <div class="navbar mb-4">
+            <h2>Detail Pasien</h2>
+        </div>
+        <table class="table table-striped table-bordered">
             <tbody>
                 <tr>
                     <th scope="row">Medical No</th>
@@ -55,12 +34,8 @@
                     <td>{{ $patient->PatientName }}</td>
                 </tr>
                 <tr>
-                    <th scope="row">Home Address</th>
-                    <td>{{ $patient->HomeAddress }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Business Partner Name</th>
-                    <td>{{ $patient->BusinessPartnerName }}</td>
+                    <th scope="row">Patient Type</th>
+                    <td>{{ $patient->CustomerType }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Charge Class Name</th>
@@ -85,6 +60,10 @@
                 <tr>
                     <th scope="row">Keterangan</th>
                     <td>{{ $patient->Keterangan }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Note</th>
+                    <td class="note-text">{{ $patient->NoteText }}</td>
                 </tr>
             </tbody>
         </table>

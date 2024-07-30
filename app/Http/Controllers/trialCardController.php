@@ -16,13 +16,11 @@ class trialCardController extends Controller
             'a.RegistrationNo',
             'a.MedicalNo',
             'a.PatientName',
-            'p.HomeAddress',
-            'a.BusinessPartnerName',
+            'r.CustomerType',
             'r.ChargeClassName',
             'a.BedCode',
             'a.BedStatus',
             'a.ParamedicName',
-            'sc.StandardCodeID',
             DB::raw('
                 CASE 
                     WHEN cv.PlanDischargeTime IS NULL
@@ -30,10 +28,12 @@ class trialCardController extends Controller
                     ELSE CAST(cv.PlanDischargeDate AS DATETIME) + CAST(cv.PlanDischargeTime AS TIME)
                 END AS RencanaPulang
             '),
+            'cv.GCPlanDischargeNotesType',
             DB::raw("
                 COALESCE(sc.StandardCodeName, '') AS Keterangan
             "),
-            'cv.GCPlanDischargeNotesType',
+            'pvn.GCNoteType',
+	        'pvn.NoteText',
             'a.RegistrationID'
         )
         ->from('vBed as a')
@@ -42,6 +42,10 @@ class trialCardController extends Controller
         ->leftJoin('vRegistration as r', 'r.RegistrationID', '=', 'a.RegistrationID')
         ->leftJoin('ConsultVisit as cv', 'cv.RegistrationID', '=', 'r.RegistrationID')
         ->leftJoin('StandardCode as sc', 'sc.StandardCodeID', '=', 'cv.GCPlanDischargeNotesType')
+        ->leftJoin('PatientVisitNote as pvn', function($join) {
+            $join->on('pvn.VisitID', '=', 'cv.VisitID')
+                 ->where('pvn.GCNoteType', '=', 'X312^003');
+        }) 
         ->where('a.IsDeleted', 0)
         ->whereNotNull('a.RegistrationID')
         ->whereNotNull('cv.PlanDischargeDate')
@@ -71,7 +75,7 @@ class trialCardController extends Controller
         // Mengelompokkan pasien berdasarkan keterangan
         $groupedPatients = [
             'Ruangan' => [],
-            'Jarsdik' => [],
+            'Jangdik' => [],
             'Farmasi' => [],
             'Kasir' => []
         ];
@@ -85,6 +89,7 @@ class trialCardController extends Controller
                 if ($dischargeTime->gt($currentTime)) {
                     // Jika waktu rencana pulang di masa depan
                     $waitTime = '00:00:00'; // Waktu tunggu belum dimulai
+                    $waitTimeInSeconds = 0; // Inisialisasi waitTimeInSeconds sebagai 0.
                 } else {
                     // Menghitung selisih waktu
                     $waitTimeInSeconds = $dischargeTime->diffInSeconds($currentTime);
@@ -97,14 +102,20 @@ class trialCardController extends Controller
                 }    
                 $patient->wait_time = $waitTime;
     
-                // Hitung persentase kemajuan
-                $patient->progress_percentage = min(($dischargeTime->diffInMinutes($currentTime) / 120) * 100, 100);
+                $standardWaitTimeInSeconds = 7200; // 2 hours
+                if ($patient->Keterangan == 'Tunggu Obat Farmasi') {
+                    $standardWaitTimeInSeconds = 3600; // 1 hour
+                } else if ($patient->Keterangan == 'Penyelesaian Administrasi Pasien (Billing)') {
+                    $standardWaitTimeInSeconds = 900; // 15 minutes
+                }
 
-                // Mengelompokkan berdasarkan Keterangan
+                $progressPercentage = min(($waitTimeInSeconds / $standardWaitTimeInSeconds) * 100, 100);
+                $patient->progress_percentage = $progressPercentage;
+
                 if (in_array($patient->Keterangan, ['Tunggu Dokter', 'Observasi Pasien', 'Lain - Lain'])) {
                     $groupedPatients['Ruangan'][] = $patient;
                 } elseif ($patient->Keterangan == 'Tunggu Hasil Pemeriksaan Penunjang') {
-                    $groupedPatients['Jarsdik'][] = $patient;
+                    $groupedPatients['Jangdik'][] = $patient;
                 } elseif ($patient->Keterangan == 'Tunggu Obat Farmasi') {
                     $groupedPatients['Farmasi'][] = $patient;
                 } elseif ($patient->Keterangan == 'Penyelesaian Administrasi Pasien (Billing)') {
@@ -116,12 +127,15 @@ class trialCardController extends Controller
         // Hitung jumlah kartu tiap kolom.
         $patientCounts = [
             'Ruangan' => count($groupedPatients['Ruangan']),
-            'Jarsdik' => count($groupedPatients['Jarsdik']),
+            'Jangdik' => count($groupedPatients['Jangdik']),
             'Farmasi' => count($groupedPatients['Farmasi']),
             'Kasir' => count($groupedPatients['Kasir']),
         ];
 
-        return view('trial.cardsViewTrial', compact('patients', 'groupedPatients', 'patientCounts'));
+        // Total pasien rencana pulang.
+        $totalPatient = array_sum($patientCounts);
+
+        return view('trial.cardsViewTrial', compact('patients', 'groupedPatients', 'patientCounts', 'totalPatient'));
     }
 
     // Controller method to show patient's details.

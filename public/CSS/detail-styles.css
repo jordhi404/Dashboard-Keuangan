@@ -1,0 +1,35 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+.detail-container {
+    margin: 0;
+    padding: 20px;
+}
+.navbar {
+    margin: 0;
+    background-color: rgba(78, 0, 248, 0.5);
+}
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
+.table th, .table td {
+    padding: .75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+    font-size: 20px;
+}
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+.table tbody + tbody {
+    border-top: 2px solid #dee2e6;
+    font-family: Arial;
+}
+.note-text {
+    white-space: pre-wrap;
+    font-family: monospace;
+}

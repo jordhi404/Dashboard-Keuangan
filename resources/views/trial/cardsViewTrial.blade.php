@@ -9,13 +9,26 @@
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="CSS/trial-style.css">
+    <link rel="stylesheet" href="CSS/snow.css">
 </head>
 <body>
-    <div class="container mb-4">
+    <div class="container">
         <div class="navbar d-flex">
             <div class="d-flex flex-column">
+                <!-- snowflakes -->
+                <div class="snowflake" style="left: 10%;"></div>
+                <div class="snowflake" style="left: 20%;"></div>
+                <div class="snowflake" style="left: 30%;"></div>
+                <div class="snowflake" style="left: 40%;"></div>
+                <div class="snowflake" style="left: 50%;"></div>
+                <div class="snowflake" style="left: 60%;"></div>
+                <div class="snowflake" style="left: 70%;"></div>
+                <div class="snowflake" style="left: 80%;"></div>
+                <div class="snowflake" style="left: 90%;"></div>
+
                 <h1 class="mb-4">Pasien Rencana Pulang</h1>
-                <p class="mb-3"> Update terakhir: {{ now()->format('H:i:s') }}</p>
+                <p class="mb-2"> Update terakhir: {{ now()->format('H:i:s') }}</p>
+                <p>Total Pasien Rencana Pulang: {{ $totalPatient }}</p>
             </div>
             <ul class="nav ms-auto">
                 @auth
@@ -41,13 +54,15 @@
             </ul>
         </div>
     </div>
-    <div class="content-container mb-4">
+    <div class="content-container">
         <div class="row">
 
-            <!-- Kolom Ruangan -->
+            <!-- Kolom Keperawatan -->
             <div class="col-md-3">
-                <h3>Ruangan</h3>
-                <h5>Jumlah: {{ $patientCounts['Ruangan'] }}</h5>
+                <div class="header">
+                    <h3>Keperawatan</h3>
+                    <h5>Jumlah: {{ $patientCounts['Ruangan'] }}</h5>
+                </div>
                 <hr class="border-5 border-primary"/>
                 @foreach ($groupedPatients['Ruangan'] as $patient)
                     <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
@@ -57,7 +72,8 @@
                         </div>
                         <div class="card-body text-small">
                             <h5 class="card-title"><strong>{{ $patient->PatientName }} </strong></h5>
-                            <p><strong>Bed Code:</strong> {{ $patient->BedCode }} <br></p>
+                            <p><strong>Penjamin Bayar:</strong> {{ $patient->CustomerType }}</p>
+                            <p><strong>Bed Code:</strong> {{ $patient->BedCode }}</p>
                             <p><strong>Wait Time:</strong><span id="wait-time-{{ $patient->MedicalNo }}"> {{ $patient->wait_time }} </span><br></p>
                             <div class="progress mb-2">
                                 <div id="progress-bar-{{ $patient->MedicalNo }}" 
@@ -75,12 +91,14 @@
                 @endforeach
             </div>
 
-            <!-- Kolom Jarsdik -->
+            <!-- Kolom Jangdik -->
             <div class="col-md-3">
-                <h3>Jarsdik</h3>
-                <h5>Jumlah: {{ $patientCounts['Jarsdik'] }}</h5>
+                <div class="header">
+                    <h3>Penunjang Medik</h3>
+                    <h5>Jumlah: {{ $patientCounts['Jangdik'] }}</h5>
+                </div>
                 <hr class="border-5 border-info"/>
-                @foreach ($groupedPatients['Jarsdik'] as $patient)
+                @foreach ($groupedPatients['Jangdik'] as $patient)
                     <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
                         <div class="card-header text-light bg-info">
                             {{ $patient->MedicalNo }}<br>
@@ -88,6 +106,7 @@
                         </div>
                         <div class="card-body text-small">
                             <h5 class="card-title"><strong>{{ $patient->PatientName }}</strong></h5>
+                            <p><strong>Penjamin Bayar:</strong> {{ $patient->CustomerType }}</p>
                             <p><strong>Bed Code:</strong> {{ $patient->BedCode }}<br></p>
                             <p><strong>Wait Time:</strong><span id="wait-time-{{ $patient->MedicalNo }}"> {{ $patient->wait_time }}</span><br></p>
                             <div class="progress mb-2">
@@ -108,8 +127,10 @@
 
             <!-- Kolom Farmasi -->
             <div class="col-md-3">
-                <h3>Farmasi</h3>
-                <h5>Jumlah: {{ $patientCounts['Farmasi'] }}</h5>
+                <div class="header">
+                    <h3>Farmasi</h3>
+                    <h5>Jumlah: {{ $patientCounts['Farmasi'] }}</h5>
+                </div>
                 <hr class="border-5 border-success"/>
                 @foreach ($groupedPatients['Farmasi'] as $patient)
                     <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
@@ -119,6 +140,7 @@
                         </div>
                         <div class="card-body text-small">
                             <h5 class="card-title"><strong>{{ $patient->PatientName }}</strong></h5>
+                            <p><strong>Penjamin Bayar:</strong> {{ $patient->CustomerType }}</p>
                             <p><strong>Bed Code:</strong> {{ $patient->BedCode }}<br></p>
                             <p><strong>Wait Time:</strong><span id="wait-time-{{ $patient->MedicalNo }}"> {{ $patient->wait_time }}</span><br></p>
                             <div class="progress mb-2">
@@ -139,8 +161,10 @@
 
             <!-- Kolom Kasir -->
             <div class="col-md-3">
-                <h3>Kasir</h3>
-                <h5>Jumlah: {{ $patientCounts['Kasir'] }}</h5>
+                <div class="header">
+                    <h3>Kasir</h3>
+                    <h5>Jumlah: {{ $patientCounts['Kasir'] }}</h5>
+                </div>
                 <hr class="border-5 border-danger"/>
                 @foreach ($groupedPatients['Kasir'] as $patient)
                     <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
@@ -150,6 +174,7 @@
                         </div>
                         <div class="card-body text-small">
                             <h5 class="card-title"><strong>{{ $patient->PatientName }}</strong></h5>
+                            <p><strong>Penjamin Bayar:</strong> {{ $patient->CustomerType }}</p>
                             <p><strong>Bed Code:</strong> {{ $patient->BedCode }}<br></p>
                             <p><strong>Wait Time:</strong><span id="wait-time-{{ $patient->MedicalNo }}"> {{ $patient->wait_time }}</span><br></p>
                             <div class="progress mb-2">

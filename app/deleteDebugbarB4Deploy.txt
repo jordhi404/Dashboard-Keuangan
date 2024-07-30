@@ -1,1 +1,0 @@
-Sebelum deploy atau sebagainya cek https://github.com/barryvdh/laravel-debugbar untuk bersihin yang tidak perlu di deployment.

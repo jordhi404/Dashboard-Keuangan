@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BedController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 
@@ -18,7 +17,5 @@ Route::middleware(['web'])->group(function () {
         Route::get('/', [DashboardController::class, 'showDashboard'])->name('dashboard');
         Route::get('/keuangan', [trialCardController::class, 'showPatientCards'])->name('patient.card');
         Route::get('/Pasien/{id}/detail', [trialCardController::class, 'showPatientDetails'])->name('patient.detail');
-        Route::get('/ranap', [BedController::class, 'index'])->name('ranap');
-        Route::get('/cs', [BedController::class, 'index'])->name('cs');  
     });  
 });

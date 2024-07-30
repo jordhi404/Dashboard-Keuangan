@@ -54,12 +54,12 @@
                         <p>Dashboard Keuangan</p>
                     </a>
                 @elseif (Auth::user()->kode_bagian == 'k32')
-                    <a href="{{ route('cs') }}" class="logo-link">
+                    <a href="#" class="logo-link">
                         <img src="{{ asset('Logo_img/house-keeping.png') }}" alt="HK">
                         <p>Dashboard House Keeping</p>
                     </a>
                 @elseif (Auth::user()->kode_bagian == 'k13' || Auth::user()->kode_bagian == 'k14' || Auth::user()->kode_bagian == 'k15' || Auth::user()->kode_bagian == 'k16')
-                    <a href="{{ route('ranap') }}" class="logo-link">
+                    <a href="#" class="logo-link">
                         <img src="{{ asset('Logo_img/hospital-bed.png') }}" alt="Ranap">
                         <p>Dashboard Ranap</p>
                     </a>
@@ -68,11 +68,11 @@
                         <img src="{{ asset('Logo_img/money.png') }}" alt="Keuangan">
                         <p>Dashboard Keuangan</p>
                     </a>
-                    <a href="{{ route('cs') }}" class="logo-link">
+                    <a href="#" class="logo-link">
                         <img src="{{ asset('Logo_img/house-keeping.png') }}" alt="HK">
                         <p>Dashboard House Keeping</p>
                     </a>
-                    <a href="{{ route('ranap') }}" class="logo-link">
+                    <a href="#" class="logo-link">
                         <img src="{{ asset('Logo_img/hospital-bed.png') }}" alt="Ranap">
                         <p>Dashboard Ranap</p>
                     </a>
