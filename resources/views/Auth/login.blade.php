@@ -9,31 +9,30 @@
     <link rel="icon" href="{{ asset('Logo_img/logo_rs.jpg') }}" type="image/x-icon">
 </head>
 <body>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card glass-card mt-5">
-                    <h3 class="text-center">Login</h3>
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('login') }}">
-                            @csrf
-                            <div class="form-group">
-                                <label for="nik">NIK</label>
-                                <input type="text" class="form-control" id="nik" name="nik" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
-                            </div> 
-                            <button type="submit" class="btn btn-success">Login</button>
-                        </form>
-                        @if ($errors->has('error'))
-                            <div class="alert alert-danger mt-3">
-                                {{ $errors->first('error') }}
-                            </div>
-                        @endif
+    <div class="container login-container">
+        <div class="login-card">
+            <div class="login-logo">
+                <img src="{{ asset('Logo_img/logo_rs.jpg') }}" alt="Logo rs">
+            </div>
+            <div class="login-form">
+                <h3 class="text-center">Login</h3>
+                <form method="POST" action="{{ route('login') }}">
+                    @csrf
+                    <div class="form-group">
+                        <label for="nik">NIK</label>
+                        <input type="text" class="form-control" id="nik" name="nik" required>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div> 
+                    <button type="submit" class="btn btn-success">Login</button>
+                </form>
+                @if ($errors->has('error'))
+                    <div class="alert alert-danger mt-3">
+                        {{ $errors->first('error') }}
+                    </div>
+                @endif
             </div>
         </div>
     </div>

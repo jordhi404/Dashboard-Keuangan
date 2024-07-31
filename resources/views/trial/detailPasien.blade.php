@@ -13,7 +13,7 @@
 <body>
     <div class="container detail-container">
         <div class="navbar mb-4">
-            <h2>Detail Pasien</h2>
+            <h1>Detail Pasien</h1>
         </div>
         <table class="table table-striped table-bordered">
             <tbody>

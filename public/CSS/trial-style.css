@@ -28,8 +28,7 @@ body {
     margin: 0;
     padding-left: 20px;
     padding-top: 20px;
-    background: rgb(255, 255, 255);
-    backdrop-filter: blur(2px);
+    background: linear-gradient(to bottom, white, rgb(190, 190, 190));
     border-radius: 2px;
 }
 .dropdown {
@@ -43,7 +42,7 @@ body {
     display: flex;
     flex-direction: column;
     padding-top: 5px;
-    background-color: rgb(255, 255, 255);
+    background: linear-gradient(to bottom, rgb(190, 190, 190), white);
 }
 
 .card-container {
@@ -76,4 +75,8 @@ body {
 
 .progress-bar-blue {
     background-color: blue;
+}
+
+.btn {
+    width: min-content;
 }

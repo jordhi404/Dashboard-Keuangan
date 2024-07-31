@@ -8,7 +8,9 @@ body {
 }
 .navbar {
     margin: 0;
-    background-color: rgba(78, 0, 248, 0.5);
+}
+.navbar h1 {
+    font-family: Arial;
 }
 .table {
     width: 100%;
