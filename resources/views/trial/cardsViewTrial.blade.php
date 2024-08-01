@@ -74,6 +74,18 @@
                             <h5 class="card-title"><strong>{{ $patient->PatientName }} </strong></h5>
                             <p><strong>Penjamin Bayar:</strong> {{ $patient->CustomerType }}</p>
                             <p><strong>Bed Code:</strong> {{ $patient->BedCode }}</p>
+                            <p>
+                                <strong>Note:</strong> {{ $patient->short_note }}
+                                @if ($patient->NoteText !== null)
+                                    <a href="#" class="more-link"
+                                        data-bs-toggle="popover"
+                                        title="{{ $patient->PatientName }}'s Note"
+                                        data-bs-content="{{ $patient->NoteText }}">
+                                        selengkapnya
+                                    </a>
+                                @endif
+                            </p>
+                            <div class="full-note-bubble"> {{ $patient->NoteText }}</div>
                             <p><strong>Wait Time:</strong><span id="wait-time-{{ $patient->MedicalNo }}"> {{ $patient->wait_time }} </span><br></p>
                             <div class="progress mb-2">
                                 <div id="progress-bar-{{ $patient->MedicalNo }}" 
@@ -85,7 +97,6 @@
                                     aria-valuemax="100">
                                 </div>
                             </div>
-                            <a href="{{ route('patient.detail', ['id' => $patient->RegistrationID]) }}" class="btn btn-primary">Detail</a>
                         </div>
                     </div>    
                 @endforeach
@@ -109,6 +120,18 @@
                             <p><strong>Penjamin Bayar:</strong> {{ $patient->CustomerType }}</p>
                             <p><strong>Bed Code:</strong> {{ $patient->BedCode }}<br></p>
                             <p><strong>Wait Time:</strong><span id="wait-time-{{ $patient->MedicalNo }}"> {{ $patient->wait_time }}</span><br></p>
+                            <p>
+                                <strong>Note:</strong> {{ $patient->short_note }}
+                                @if ($patient->NoteText !== null)
+                                    <a href="#" class="more-link"
+                                        data-bs-toggle="popover"
+                                        title="{{ $patient->PatientName }}'s Note"
+                                        data-bs-content="{{ $patient->NoteText }}">
+                                        selengkapnya
+                                    </a>
+                                @endif
+                            </p>
+                            <div class="full-note-bubble"> {{ $patient->NoteText }}</div>
                             <div class="progress mb-2">
                                 <div id="progress-bar-{{ $patient->MedicalNo }}" 
                                     class="progress-bar {{ $patient->progress_percentage > 100 ? 'progress-bar-red' : 'progress-bar-blue' }}"
@@ -119,7 +142,6 @@
                                     aria-valuemax="100">
                                 </div>
                             </div>
-                            <a href="{{ route('patient.detail', ['id' => $patient->RegistrationID]) }}" class="btn btn-primary">Detail</a>
                         </div>
                     </div>    
                 @endforeach
@@ -142,6 +164,17 @@
                             <h5 class="card-title"><strong>{{ $patient->PatientName }}</strong></h5>
                             <p><strong>Penjamin Bayar:</strong> {{ $patient->CustomerType }}</p>
                             <p><strong>Bed Code:</strong> {{ $patient->BedCode }}<br></p>
+                            <p>
+                                <strong>Note:</strong> {{ $patient->short_note }}
+                                @if ($patient->NoteText !== null)
+                                    <a href="#" class="more-link"
+                                        data-bs-toggle="popover"
+                                        title="{{ $patient->PatientName }}'s Note"
+                                        data-bs-content="{{ $patient->NoteText }}">
+                                        selengkapnya
+                                    </a>
+                                @endif
+                            </p>
                             <p><strong>Wait Time:</strong><span id="wait-time-{{ $patient->MedicalNo }}"> {{ $patient->wait_time }}</span><br></p>
                             <div class="progress mb-2">
                                 <div id="progress-bar-{{ $patient->MedicalNo }}" 
@@ -153,7 +186,6 @@
                                     aria-valuemax="100">
                                 </div>
                             </div>
-                            <a href="{{ route('patient.detail', ['id' => $patient->RegistrationID]) }}" class="btn btn-primary">Detail</a>
                         </div>
                     </div>    
                 @endforeach
@@ -176,6 +208,17 @@
                             <h5 class="card-title"><strong>{{ $patient->PatientName }}</strong></h5>
                             <p><strong>Penjamin Bayar:</strong> {{ $patient->CustomerType }}</p>
                             <p><strong>Bed Code:</strong> {{ $patient->BedCode }}<br></p>
+                            <p>
+                                <strong>Note:</strong> {{ $patient->short_note }}
+                                @if ($patient->NoteText !== null)
+                                    <a href="#" class="more-link"
+                                        data-bs-toggle="popover"
+                                        title="{{ $patient->PatientName }}'s Note"
+                                        data-bs-content="{{ $patient->NoteText }}">
+                                        selengkapnya
+                                    </a>
+                                @endif
+                            </p>
                             <p><strong>Wait Time:</strong><span id="wait-time-{{ $patient->MedicalNo }}"> {{ $patient->wait_time }}</span><br></p>
                             <div class="progress mb-2">
                                 <div id="progress-bar-{{ $patient->MedicalNo }}" 
@@ -187,21 +230,20 @@
                                     aria-valuemax="100">
                                 </div>
                             </div>
-                            <a href="{{ route('patient.detail', ['id' => $patient->RegistrationID]) }}" class="btn btn-primary">Detail</a>
                         </div>
                     </div>    
                 @endforeach
             </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('JS/script.js') }}"></script>
     <script>
         window.patients = @json($patients); // Tidak perlu dikhawatirkan.
         console.log("Patients data: ", window.patients);
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

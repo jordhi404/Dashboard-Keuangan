@@ -48,7 +48,13 @@ function updateTime() {
 
 setInterval(updateTime, 1000);
 
-
+document.addEventListener('DOMContentLoaded', function () {
+    // Inisialisasi semua popover
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl);
+    });
+});
 
 setInterval(function() {
     window.location.href = window.location.href.split('?')[0] + "?t=" + new Date().getTime();
