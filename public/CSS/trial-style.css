@@ -80,3 +80,14 @@ body {
 .btn {
     width: min-content;
 }
+  
+.more-link {
+    color: #007bff;
+    text-decoration: none;
+    cursor: pointer;
+}
+  
+.more-link:hover {
+    text-decoration: underline;
+}
+  

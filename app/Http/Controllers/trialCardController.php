@@ -6,6 +6,7 @@ use App\Models\Bed;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class trialCardController extends Controller
 {
@@ -82,6 +83,10 @@ class trialCardController extends Controller
     
         foreach ($patients as $group => $patientGroup) {
             foreach ($patientGroup as $patient) {
+                // Patient's short note.
+                $patient->short_note = $patient->NoteText ? Str::limit($patient->NoteText, 10) : '-';
+                $patient->full_note = $patient->NoteText ? $patient->NoteText : '-';
+
                 // Mengambil waktu rencana pulang
                 $dischargeTime = Carbon::parse($patient->RencanaPulang);
     
