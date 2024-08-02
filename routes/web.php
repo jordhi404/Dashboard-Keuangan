@@ -16,6 +16,5 @@ Route::middleware(['web'])->group(function () {
     Route::middleware('auth', 'no-cache')->group(function () {
         Route::get('/', [DashboardController::class, 'showDashboard'])->name('dashboard');
         Route::get('/keuangan', [trialCardController::class, 'showPatientCards'])->name('patient.card');
-        Route::get('/Pasien/{id}/detail', [trialCardController::class, 'showPatientDetails'])->name('patient.detail');
     });  
 });
