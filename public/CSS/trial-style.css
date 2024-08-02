@@ -76,10 +76,6 @@ body {
 .progress-bar-blue {
     background-color: blue;
 }
-
-.btn {
-    width: min-content;
-}
   
 .more-link {
     color: #007bff;

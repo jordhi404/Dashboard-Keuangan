@@ -142,15 +142,4 @@ class trialCardController extends Controller
 
         return view('trial.cardsViewTrial', compact('patients', 'groupedPatients', 'patientCounts', 'totalPatient'));
     }
-
-    // Controller method to show patient's details.
-    public function showPatientDetails($id) {
-        $patient = $this->getPatientData($id);
-        $currentTime = Carbon::now();
-        $dischargeTime = Carbon::parse($patient->RencanaPulang);
-
-        Debugbar::info('current time: '.$currentTime->format('Y-m-d H:i:s'));
-        Debugbar::info('discharge time: '.$dischargeTime);
-        return view('trial.detailPasien', compact('patient'));
-    }
 }
