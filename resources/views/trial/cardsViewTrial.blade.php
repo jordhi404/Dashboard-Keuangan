@@ -66,8 +66,12 @@
                 </div>
                 <hr class="border-5 border-primary"/>
                 @foreach ($groupedPatients['Ruangan'] as $patient)
+                    @php 
+                        $color = $customerTypeColors[$patient->CustomerType] ?? 'defaultColor';
+                    @endphp
+
                     <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
-                        <div class="card-header text-light bg-primary">
+                        <div class="card-header" style="background-color: {{ $color }}">
                             {{ $patient->MedicalNo }}<br>
                             <span class="float-start">Rencana Pulang: {{ $patient->RencanaPulang }}</span>
                         </div>
@@ -111,8 +115,12 @@
                 </div>
                 <hr class="border-5 border-info"/>
                 @foreach ($groupedPatients['Jangdik'] as $patient)
+                    @php 
+                        $color = $customerTypeColors[$patient->CustomerType] ?? 'defaultColor';
+                    @endphp
+
                     <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
-                        <div class="card-header text-light bg-info">
+                        <div class="card-header" style="background-color: {{ $color }}">
                             {{ $patient->MedicalNo }}<br>
                             <span class="float-start">Rencana Pulang: {{ $patient->RencanaPulang }}</span>
                         </div>
@@ -156,8 +164,12 @@
                 </div>
                 <hr class="border-5 border-success"/>
                 @foreach ($groupedPatients['Farmasi'] as $patient)
+                    @php 
+                        $color = $customerTypeColors[$patient->CustomerType] ?? 'defaultColor';
+                    @endphp
+
                     <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
-                        <div class="card-header text-light bg-success">
+                        <div class="card-header" style="background-color: {{ $color }}">
                             {{ $patient->MedicalNo }}<br>
                             <span class="float-start">Rencana Pulang: {{ $patient->RencanaPulang }}</span>
                         </div>
@@ -200,8 +212,12 @@
                 </div>
                 <hr class="border-5 border-danger"/>
                 @foreach ($groupedPatients['Kasir'] as $patient)
+                    @php 
+                        $color = $customerTypeColors[$patient->CustomerType] ?? 'defaultColor';
+                    @endphp
+
                     <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
-                        <div class="card-header text-light bg-danger">
+                        <div class="card-header" style="background-color: {{ $color }}">
                             {{ $patient->MedicalNo }}<br>
                             <span class="float-start">Rencana Pulang: {{ $patient->RencanaPulang }}</span>
                         </div>
