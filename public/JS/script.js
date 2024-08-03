@@ -55,7 +55,3 @@ document.addEventListener('DOMContentLoaded', function () {
         return new bootstrap.Popover(popoverTriggerEl);
     });
 });
-
-setInterval(function() {
-    window.location.href = window.location.href.split('?')[0] + "?t=" + new Date().getTime();
-}, 300000);

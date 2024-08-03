@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="180">
     <title>Dashboard Keuangan</title>
     <link rel="icon" href="{{ asset('Logo_img/logo_rs.jpg') }}" type="image/x-icon">
     
@@ -58,7 +59,7 @@
         <div class="row">
 
             <!-- Kolom Keperawatan -->
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="header">
                     <h3>Keperawatan</h3>
                     <h5>Jumlah: {{ $patientCounts['Ruangan'] }}</h5>
@@ -77,7 +78,7 @@
                             <p>
                                 <strong>Note:</strong> {{ $patient->short_note }}
                                 @if ($patient->NoteText !== null)
-                                    <a href="#" class="more-link"
+                                    <a class="more-link"
                                         data-bs-toggle="popover"
                                         title="{{ $patient->PatientName }}'s Note"
                                         data-bs-content="{{ $patient->NoteText }}">
@@ -103,7 +104,7 @@
             </div>
 
             <!-- Kolom Jangdik -->
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="header">
                     <h3>Penunjang Medik</h3>
                     <h5>Jumlah: {{ $patientCounts['Jangdik'] }}</h5>
@@ -123,7 +124,7 @@
                             <p>
                                 <strong>Note:</strong> {{ $patient->short_note }}
                                 @if ($patient->NoteText !== null)
-                                    <a href="#" class="more-link"
+                                    <a class="more-link"
                                         data-bs-toggle="popover"
                                         title="{{ $patient->PatientName }}'s Note"
                                         data-bs-content="{{ $patient->NoteText }}">
@@ -148,7 +149,7 @@
             </div>
 
             <!-- Kolom Farmasi -->
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="header">
                     <h3>Farmasi</h3>
                     <h5>Jumlah: {{ $patientCounts['Farmasi'] }}</h5>
@@ -167,7 +168,7 @@
                             <p>
                                 <strong>Note:</strong> {{ $patient->short_note }}
                                 @if ($patient->NoteText !== null)
-                                    <a href="#" class="more-link"
+                                    <a class="more-link"
                                         data-bs-toggle="popover"
                                         title="{{ $patient->PatientName }}'s Note"
                                         data-bs-content="{{ $patient->NoteText }}">
@@ -192,7 +193,7 @@
             </div>
 
             <!-- Kolom Kasir -->
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="header">
                     <h3>Kasir</h3>
                     <h5>Jumlah: {{ $patientCounts['Kasir'] }}</h5>
@@ -211,7 +212,7 @@
                             <p>
                                 <strong>Note:</strong> {{ $patient->short_note }}
                                 @if ($patient->NoteText !== null)
-                                    <a href="#" class="more-link"
+                                    <a class="more-link"
                                         data-bs-toggle="popover"
                                         title="{{ $patient->PatientName }}'s Note"
                                         data-bs-content="{{ $patient->NoteText }}">
@@ -233,6 +234,16 @@
                         </div>
                     </div>    
                 @endforeach
+            </div>
+
+            <!-- Kolom Administrasi selesai -->
+            <div class="col-md-2">
+                <div class="header">
+                    <h3>Selesai</h3>
+                    <h5>Jumlah:</h5>
+                </div>
+                <hr class="border-5 border-secondary"/>
+                
             </div>
         </div>
     </div>
