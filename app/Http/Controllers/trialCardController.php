@@ -137,9 +137,22 @@ class trialCardController extends Controller
             'Kasir' => count($groupedPatients['Kasir']),
         ];
 
+        // Color by CustomerType.
+        $customerTypeColors = [
+            'Rekanan' => 'orange',
+            'Perusahaan' => 'purple',
+            'Yayasan' => 'lime',
+            'Karyawan - FASKES' => 'green',
+            'Karyawan - PTGJ' => 'lightgreen',
+            'Pemerintah' => 'red',
+            'Rumah Sakit' => 'aqua',
+            'BPJS - Kemenkes' => 'yellow',
+            'Pribadi' => 'lightblue',
+        ];
+
         // Total pasien rencana pulang.
         $totalPatient = array_sum($patientCounts);
 
-        return view('trial.cardsViewTrial', compact('patients', 'groupedPatients', 'patientCounts', 'totalPatient'));
+        return view('trial.cardsViewTrial', compact('patients', 'groupedPatients', 'patientCounts', 'totalPatient', 'customerTypeColors'));
     }
 }
