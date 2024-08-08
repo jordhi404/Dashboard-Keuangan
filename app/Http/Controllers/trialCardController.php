@@ -140,7 +140,7 @@ class trialCardController extends Controller
         // Color by CustomerType.
         $customerTypeColors = [
             'Rekanan' => 'orange',
-            'Perusahaan' => 'purple',
+            'Perusahaan' => 'pink',
             'Yayasan' => 'lime',
             'Karyawan - FASKES' => 'green',
             'Karyawan - PTGJ' => 'lightgreen',

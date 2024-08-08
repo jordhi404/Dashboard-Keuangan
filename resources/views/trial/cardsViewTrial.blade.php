@@ -31,13 +31,17 @@
                 <p class="mb-2"> Update terakhir: {{ now()->format('H:i:s') }}</p>
                 <p>Total Pasien Rencana Pulang: {{ $totalPatient }}</p>
             </div>
-            <ul class="nav ms-auto">
+            <div class="nav ms-auto">
                 @auth
                     <li class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            Selamat datang, {{ Auth::user()->name }}!
+                            {{ Auth::user()->name }}
                         </button>
                         <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#filterModal">Filter Kartu Pasien</a>                            
+                            </li>
+                            <div class="dropdown-divider"></div>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -52,7 +56,29 @@
                         </ul>
                     </li>
                 @endauth
-            </ul>
+                <!-- <p>Pasien Terfilter: <span id="filteredPatientCount">0</span></p>
+                <p>Keterangan Filter: <span id="filterDescription">Tidak ada filter</span></p> -->
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="filterModalLabel">Filter Kartu Pasien</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="filterForm" method="GET" action="#">
+                            <div class="mb-3">
+                                <label for="customer_type" class="form-label">Penjamin</label>
+                                <select class="form-select" id="customer_type" name="customer_type">
+                                    <option value="">Semua</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="content-container">
@@ -70,7 +96,7 @@
                         $color = $customerTypeColors[$patient->CustomerType] ?? 'defaultColor';
                     @endphp
 
-                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
+                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}" data-customer-type="{{ $patient->CustomerType }}">
                         <div class="card-header" style="background-color: {{ $color }}">
                             {{ $patient->MedicalNo }}<br>
                             <span class="float-start">Rencana Pulang: {{ $patient->RencanaPulang }}</span>
@@ -119,7 +145,7 @@
                         $color = $customerTypeColors[$patient->CustomerType] ?? 'defaultColor';
                     @endphp
 
-                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
+                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}" data-customer-type="{{ $patient->CustomerType }}">
                         <div class="card-header" style="background-color: {{ $color }}">
                             {{ $patient->MedicalNo }}<br>
                             <span class="float-start">Rencana Pulang: {{ $patient->RencanaPulang }}</span>
@@ -168,7 +194,7 @@
                         $color = $customerTypeColors[$patient->CustomerType] ?? 'defaultColor';
                     @endphp
 
-                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
+                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}" data-customer-type="{{ $patient->CustomerType }}">
                         <div class="card-header" style="background-color: {{ $color }}">
                             {{ $patient->MedicalNo }}<br>
                             <span class="float-start">Rencana Pulang: {{ $patient->RencanaPulang }}</span>
@@ -216,7 +242,7 @@
                         $color = $customerTypeColors[$patient->CustomerType] ?? 'defaultColor';
                     @endphp
 
-                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
+                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}" data-customer-type="{{ $patient->CustomerType }}">
                         <div class="card-header" style="background-color: {{ $color }}">
                             {{ $patient->MedicalNo }}<br>
                             <span class="float-start">Rencana Pulang: {{ $patient->RencanaPulang }}</span>

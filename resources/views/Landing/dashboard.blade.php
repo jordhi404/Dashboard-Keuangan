@@ -22,12 +22,12 @@
 
     <div class="container">
         <div class="navbar">
-            <img src="{{ asset('Logo_img/logo_rs_panjang.jpg') }}" alt="logo rs" class="navbar-logo"> 
+            <h1>Dashboard untuk admin</h1>
             <ul class="nav ms-auto">
                 @auth
                     <li class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            Selamat datang, {{ Auth::user()->name }}!
+                            {{ Auth::user()->name }}
                         </button>
                         <ul class="dropdown-menu">
                             <li>
@@ -46,39 +46,20 @@
                 @endauth
             </ul>
         </div>
-        <div class="container text-center">
+        <div class="content-container text-center">
             <div class="logo-container mt-5">
-                @if  (Auth::user()->kode_bagian == 'k2' || Auth::user()->kode_bagian == 'os15')
-                    <a href="{{ route('patient.card') }}" class="logo-link">
-                        <img src="{{ asset('Logo_img/money.png') }}" alt="Keuangan">
-                        <p>Dashboard Keuangan</p>
-                    </a>
-                @elseif (Auth::user()->kode_bagian == 'k32')
-                    <a href="#" class="logo-link">
-                        <img src="{{ asset('Logo_img/house-keeping.png') }}" alt="HK">
-                        <p>Dashboard House Keeping</p>
-                    </a>
-                @elseif (Auth::user()->kode_bagian == 'k13' || Auth::user()->kode_bagian == 'k14' || Auth::user()->kode_bagian == 'k15' || Auth::user()->kode_bagian == 'k16')
-                    <a href="#" class="logo-link">
-                        <img src="{{ asset('Logo_img/hospital-bed.png') }}" alt="Ranap">
-                        <p>Dashboard Ranap</p>
-                    </a>
-                @elseif (Auth::user()->kode_bagian == 'k45' || Auth::user()->kode_bagian == 'os26')
-                    <a href="{{ route('patient.card') }}" class="logo-link">
-                        <img src="{{ asset('Logo_img/money.png') }}" alt="Keuangan">
-                        <p>Dashboard Keuangan</p>
-                    </a>
-                    <a href="#" class="logo-link">
-                        <img src="{{ asset('Logo_img/house-keeping.png') }}" alt="HK">
-                        <p>Dashboard House Keeping</p>
-                    </a>
-                    <a href="#" class="logo-link">
-                        <img src="{{ asset('Logo_img/hospital-bed.png') }}" alt="Ranap">
-                        <p>Dashboard Ranap</p>
-                    </a>
-                @else
-                    <h2>Anda tidak memiliki akses ke dashboard manapun.</h2>
-                @endif
+                <a href="{{ route('keuangan') }}" class="logo-link">
+                    <img src="{{ asset('Logo_img/money.png') }}" alt="Keuangan">
+                    <p>Dashboard Keuangan</p>
+                </a>
+                <a href="{{ route('cs') }}" class="logo-link">
+                    <img src="{{ asset('Logo_img/house-keeping.png') }}" alt="HK">
+                    <p>Dashboard House Keeping</p>
+                </a>
+                <a href="{{ route('ranap') }}" class="logo-link">
+                    <img src="{{ asset('Logo_img/hospital-bed.png') }}" alt="Ranap">
+                    <p>Dashboard Ranap</p>
+                </a>
             </div>
         </div>
     </div>
