@@ -24,21 +24,21 @@ body {
 
 .navbar {
     justify-content: space-between;
-    align-items: center;
+    align-items: start;
     margin: 0;
     padding-left: 20px;
     padding-top: 20px;
-    background: linear-gradient(to bottom, white, rgb(190, 190, 190));
+    background: linear-gradient(to bottom, rgb(156, 156, 156), rgb(190, 190, 190));
     border-radius: 2px;
 }
 .dropdown {
-    margin-right: 20px;
-    margin-bottom: 10px;
+    margin-right: 30px;
+    margin-top: 20px;
 }
 
 .content-container {
     margin: 0;
-    padding: 10px;
+    padding: 30px;
     display: flex;
     flex-direction: column;
     padding-top: 5px;

@@ -26,8 +26,18 @@ class AuthController extends Controller
         {
             Auth::login($employee);
             if (Auth::check()) {
-                // return redirect()->intended(route('index'));
-                return redirect()->intended(route('dashboard'));
+                if (Auth::user()->kode_bagian == 'k45' || Auth::user()->kode_bagian == 'os26') {
+                    return redirect()->intended(route('dashboard'));
+                } 
+                elseif (Auth::user()->kode_bagian == 'k2' || Auth::user()->kode_bagian == 'os15') {
+                    return redirect() -> intended(route('keuangan'));
+                }
+                elseif (Auth::user()->kode_bagian == 'k32') {
+                    return redirect() -> route('cs');
+                }
+                elseif (Auth::user()->kode_bagian == 'k13' || Auth::user()->kode_bagian == 'k14' || Auth::user()->kode_bagian == 'k15' || Auth::user()->kode_bagian == 'k16') {
+                    return redirect() -> route('ranap');
+                }
             }
         } 
         else
