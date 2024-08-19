@@ -97,13 +97,13 @@ body {
     z-index: 1; /* Stay on top */
     top: 0; /* Stay at the top */
     left: 0;
-    background-color: #dddddd; /* Black*/
+    background: linear-gradient(to bottom, rgb(156, 156, 156), rgb(190, 190, 190), white);
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 60px; /* Place content 60px from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 }
   
-.sidenav p, .sidenav a {
+.sidenav p{
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 23px;
@@ -112,7 +112,7 @@ body {
     transition: 0.3s;
 }
 
-.sidenav button {
+.sidenav button, .sidenav a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 20px;

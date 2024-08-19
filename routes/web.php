@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\HKDashboard;
+use App\Http\Controllers\HKController;
+use App\Http\Controllers\RanapController;
 // Trial card
 use App\Http\Controllers\trialCardController;
 
@@ -16,9 +17,11 @@ Route::middleware(['web'])->group(function () {
     Route::middleware('auth', 'no-cache')->group(function () {
         Route::get('/', [DashboardController::class, 'showDashboard'])->name('dashboard');
         Route::get('/keuangan', [trialCardController::class, 'showPatientCards'])->name('keuangan');
-        Route::get('/ranap', function () {
-            return view('Ranap.ranap');
-        }) -> name('ranap');
-        Route::get('/CS', [HKDashboard::class, 'index']) -> name('cs');
+
+        Route::get('/ranap', [RanapController::class, 'showPatientCards']) -> name('ranap');
+
+        Route::get('/Billing', [RanapController::class, 'showSelesaiBilling']) -> name('billing');
+
+        Route::get('/CS', [HKController::class, 'showHKDashboard']) -> name('cs');
     });  
 });
