@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class trialCardController extends Controller
+class RanapController extends Controller
 {
     // Method to get data based on query.
     private function getPatientData($registrationID = null)
@@ -19,7 +19,6 @@ class trialCardController extends Controller
             'r.CustomerType',
             'r.ChargeClassName',
             'a.BedCode',
-            'a.ParamedicName',
             DB::raw("
                 CASE 
                     WHEN cv.PlanDischargeTime IS NULL
@@ -30,9 +29,7 @@ class trialCardController extends Controller
             DB::raw("
                 COALESCE(sc.StandardCodeName, '') AS Keterangan
             "),
-            'pvn.GCNoteType',
 	        'pvn.NoteText',
-            'a.RegistrationID'
         )
         ->from('vBed as a')
         ->leftJoin('vPatient as p', 'p.MRN', '=', 'a.MRN')
@@ -65,8 +62,8 @@ class trialCardController extends Controller
     // Method to get SelesaiBilling data
     private function getSelesaiBillingData($patients)
     {
-        foreach ($patients as $group => $patientGroup) {
-            foreach ($patientGroup as $patient) {
+        foreach ($patients as $group ) {
+            foreach ($group as $patient) {
                 // Query to get the SelesaiBilling data
                 $patient->SelesaiBilling = DB::connection('sqlsrv')
                     ->table('ReportPrintLog')
@@ -87,7 +84,7 @@ class trialCardController extends Controller
 
         // Mengelompokkan pasien berdasarkan keterangan
         $groupedPatients = [
-            'Ruangan' => [],
+            'Keperawatan' => [],
             'Jangdik' => [],
             'Farmasi' => [],
             'Kasir' => [],
@@ -129,7 +126,7 @@ class trialCardController extends Controller
                 $patient->progress_percentage = $progressPercentage;
 
                 if (in_array($patient->Keterangan, ['Tunggu Dokter', 'Observasi Pasien', 'Lain - Lain'])) {
-                    $groupedPatients['Ruangan'][] = $patient;
+                    $groupedPatients['Keperawatan'][] = $patient;
                 } elseif ($patient->Keterangan == 'Tunggu Hasil Pemeriksaan Penunjang') {
                     $groupedPatients['Jangdik'][] = $patient;
                 } elseif ($patient->Keterangan == 'Tunggu Obat Farmasi') {
@@ -142,7 +139,7 @@ class trialCardController extends Controller
         
         // Hitung jumlah kartu tiap kolom.
         $patientCounts = [
-            'Ruangan' => count($groupedPatients['Ruangan']),
+            'Keperawatan' => count($groupedPatients['Keperawatan']),
             'Jangdik' => count($groupedPatients['Jangdik']),
             'Farmasi' => count($groupedPatients['Farmasi']),
             'Kasir' => count($groupedPatients['Kasir']),
@@ -161,6 +158,6 @@ class trialCardController extends Controller
             'Pribadi' => 'lightblue',
         ];
 
-        return view('trial.cardsViewTrial', compact('patients', 'groupedPatients', 'patientCounts', 'customerTypeColors'));
+        return view('Ranap.ranap', compact('patients', 'groupedPatients', 'patientCounts', 'customerTypeColors'));
     }
 }
