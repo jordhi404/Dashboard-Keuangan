@@ -6,98 +6,131 @@ use App\Models\Bed;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class RanapController extends Controller
 {
-    // Method to get data based on query.
-    private function getPatientData($registrationID = null)
+    /* CONNECTION KE DATABASE SQLSRV UNTUK MENGAMBIL DATA PASIEN. */
+    private function getPatientData()
     {
-        $query = Bed::select(
-            'a.MedicalNo',
-            'a.PatientName',
-            'r.CustomerType',
-            'r.ChargeClassName',
-            'a.BedCode',
-            DB::raw("
-                CASE 
-                    WHEN cv.PlanDischargeTime IS NULL
-                    THEN CAST(cv.PlanDischargeDate AS VARCHAR) + ' ' + CAST(cv.PlanDischargeTime AS VARCHAR)
-                    ELSE CAST(cv.PlanDischargeDate AS DATETIME) + ' ' + CAST(cv.PlanDischargeTime AS TIME)
-                END AS RencanaPulang
-            "),
-            DB::raw("
-                COALESCE(sc.StandardCodeName, '') AS Keterangan
-            "),
-	        'pvn.NoteText',
-        )
-        ->from('vBed as a')
-        ->leftJoin('vPatient as p', 'p.MRN', '=', 'a.MRN')
-        ->leftJoin('PatientNotes as pn', 'pn.MRN', '=', 'a.MRN')
-        ->leftJoin('vRegistration as r', 'r.RegistrationID', '=', 'a.RegistrationID')
-        ->leftJoin('ConsultVisit as cv', 'cv.RegistrationID', '=', 'r.RegistrationID')
-        ->leftJoin('StandardCode as sc', 'sc.StandardCodeID', '=', 'cv.GCPlanDischargeNotesType')
-        ->leftJoin('PatientVisitNote as pvn', function($join) {
-            $join->on('pvn.VisitID', '=', 'cv.VisitID')
-                 ->where('pvn.GCNoteType', '=', 'X312^003');
-        })
-        ->where('a.IsDeleted', 0)
-        ->whereNotNull('a.RegistrationID')
-        ->whereNotNull('cv.PlanDischargeDate')
-        ->where('r.GCRegistrationStatus', '<>', 'X020^006')
-        ->orderBy('a.BedCode')
-        ->distinct();
-        
-        if($registrationID)
-        {
-            $query->where('a.RegistrationID', $registrationID);
-            return $query->first();
-        } 
-        else 
-        {
-            return $query->get()->groupBy('Keterangan');
-        }
+        $cacheKey = 'patientRanap';
+
+        return Cache::remember($cacheKey, 300, function() {
+            return DB::connection('sqlsrv')
+                -> select("
+                WITH Dashboard_CTE AS (
+                    SELECT DISTINCT 
+                        a.RegistrationNo,
+                        r.ServiceUnitName,
+                        a.BedCode,
+                        a.MedicalNo,
+                        a.PatientName,
+                        r.CustomerType,
+                        r.ChargeClassName,
+                        RencanaPulang = 
+                            CASE 
+                                WHEN cv.PlanDischargeTime IS NULL
+                                    THEN CAST(cv.PlanDischargeDate AS VARCHAR) + ' ' + CAST(cv.PlanDischargeTime AS VARCHAR)
+                                ELSE CAST(cv.PlanDischargeDate AS VARCHAR) + ' ' + CAST(cv.PlanDischargeTime AS VARCHAR)
+                            END,
+                        Keperawatan =
+                            (SELECT TOP 1 TransactionNo 
+                            FROM PatientChargesHD
+                            WHERE VisitID=cv.VisitID 
+                            AND GCTransactionStatus<>'X121^999' 
+                            AND GCTransactionStatus IN ('X121^001','X121^002','X121^003')
+                            AND HealthcareServiceUnitID NOT IN (82,83,99,138,140,101,137)
+                            ORDER BY TestOrderID ASC),
+                        TungguJangdik = 
+                            (SELECT TOP 1 TransactionNo 
+                            FROM PatientChargesHD
+                            WHERE VisitID=cv.VisitID 
+                            AND GCTransactionStatus<>'X121^999' 
+                            AND GCTransactionStatus IN ('X121^001','X121^002','X121^003')
+                            AND HealthcareServiceUnitID IN (82,83,99,138,140)
+                            ORDER BY TestOrderID ASC),
+                        TungguFarmasi = 
+                            (SELECT TOP 1 TransactionNo 
+                            FROM PatientChargesHD
+                            WHERE VisitID=cv.VisitID 
+                            AND GCTransactionStatus<>'X121^999' 
+                            AND GCTransactionStatus IN ('X121^001','X121^002','X121^003')
+                            AND HealthcareServiceUnitID IN (101,137)
+                            ORDER BY TestOrderID ASC),
+                        RegistrationStatus = 
+                            (SELECT TOP 1 IsLockDownNEW
+                            FROM RegistrationStatusLog 
+                            WHERE RegistrationID = a.RegistrationID 
+                            ORDER BY ID DESC),
+                        OutStanding =
+                            (SELECT DISTINCT COUNT(GCTransactionStatus) 
+                            FROM PatientChargesHD 
+                            WHERE VisitID=cv.VisitID 
+                            AND GCTransactionStatus IN ('X121^001','X121^002','X121^003')),
+                        SelesaiBilling = 
+                            (SELECT TOP 1 PrintedDate 
+                            FROM ReportPrintLog 
+                            WHERE ReportID=7012 
+                            AND ReportParameter = CONCAT('RegistrationID = ',r.RegistrationID) 
+                            ORDER BY PrintedDate DESC),
+                        Keterangan =
+                        CASE 
+                            WHEN sc.StandardCodeName = '' OR sc.StandardCodeName IS NULL
+                                THEN ''
+                            ELSE sc.StandardCodeName
+                        END,
+                        pvn.NoteText
+                    FROM vBed a
+                    LEFT JOIN vPatient p ON p.MRN = a.MRN
+                    LEFT JOIN PatientNotes pn ON pn.MRN = a.MRN
+                    LEFT JOIN vRegistration r ON r.RegistrationID = a.RegistrationID
+                    LEFT JOIN ConsultVisit cv ON cv.VisitID = r.VisitID
+                    LEFT JOIN StandardCode sc ON sc.StandardCodeID = cv.GCPlanDischargeNotesType
+                    LEFT JOIN PatientVisitNote pvn ON pvn.VisitID = cv.VisitID 
+                        AND pvn.GCNoteType IN ('X312^001', 'X312^002', 'X312^003', 'X312^004', 'X312^005', 'X312^006')
+                    WHERE a.IsDeleted = 0 
+                    AND a.RegistrationID IS NOT NULL
+                    AND cv.PlanDischargeDate IS NOT NULL
+                    AND r.GCRegistrationStatus <> 'X020^006' -- Pendaftaran Tidak DiBatalkan
+                )
+                SELECT 
+                    RegistrationNo,
+                    ServiceUnitName,
+                    BedCode,
+                    MedicalNo,
+                    PatientName,
+                    CustomerType,
+                    ChargeClassName,
+                    RencanaPulang,
+                    NoteText,
+                    CASE
+                        WHEN Keperawatan IS NOT NULL THEN 'TungguKeperawatan'
+                        WHEN TungguJangdik IS NOT NULL THEN 'TungguJangdik'
+                        WHEN TungguFarmasi IS NOT NULL THEN 'TungguFarmasi'
+                        WHEN RegistrationStatus = 0 AND OutStanding > 0 AND SelesaiBilling IS NULL THEN 'TungguKasir'
+                        WHEN RegistrationStatus = 1 AND OutStanding = 0 AND SelesaiBilling IS NULL THEN 'TungguKasir'
+                        WHEN RegistrationStatus = 1 AND OutStanding = 0 AND SelesaiBilling IS NOT NULL THEN 'SelesaiKasir'
+                    END AS Keterangan
+                FROM Dashboard_CTE
+            ");
+        });
     }
 
-    // Method to get SelesaiBilling data
-    private function getSelesaiBillingData($patients)
-    {
-        foreach ($patients as $group ) {
-            foreach ($group as $patient) {
-                // Query to get the SelesaiBilling data
-                $patient->SelesaiBilling = DB::connection('sqlsrv')
-                    ->table('ReportPrintLog')
-                    ->select(DB::raw('MAX(PrintedDate) as SelesaiBilling'))
-                    ->where('ReportID', 7012)
-                    ->where('ReportParameter', 'like', 'RegistrationID = ' . $patient->RegistrationID . '%')
-                    ->value('SelesaiBilling');
-            }
-        }
-        return $patients;
-    }
+    /* FUNCTION UNTUK MENAMPILKAN DATA DI DASHBOARD RANAP. */
+    public function showdashboardRanap() {
 
-    // Controller method to show patient cards.
-    public function showPatientCards() {
-        $patients = $this->getPatientData();
-        $selesaiBillingData = $this->getSelesaiBillingData($patients);
-        $currentTime = Carbon::now();
+        /* MENGAMBIL DATA PASIEN UNTUK DITAMPILKAN. */
+            $patients = $this->getPatientData();
+            $currentTime = Carbon::now();
 
-        // Mengelompokkan pasien berdasarkan keterangan
-        $groupedPatients = [
-            'Keperawatan' => [],
-            'Jangdik' => [],
-            'Farmasi' => [],
-            'Kasir' => [],
-        ];
-    
-        foreach ($patients as $group => $patientGroup) {
-            foreach ($patientGroup as $patient) {
+            foreach ($patients as $patient) {
                 // Patient's short note.
                 $patient->short_note = $patient->NoteText ? Str::limit($patient->NoteText, 10) : '-';
 
                 // Mengambil waktu rencana pulang
                 $dischargeTime = Carbon::parse($patient->RencanaPulang);
-    
+
                 // Menghitung waktu tunggu
                 if ($dischargeTime->gt($currentTime)) {
                     // Jika waktu rencana pulang di masa depan
@@ -106,7 +139,7 @@ class RanapController extends Controller
                 } else {
                     // Menghitung selisih waktu
                     $waitTimeInSeconds = $dischargeTime->diffInSeconds($currentTime);
-    
+
                     // Format waktu tunggu dalam format hh:mm:ss
                     $hours = floor($waitTimeInSeconds / 3600);
                     $minutes = floor(($waitTimeInSeconds % 3600) / 60);
@@ -114,7 +147,7 @@ class RanapController extends Controller
                     $waitTime = sprintf('%02d:%02d:%02d', $hours, $minutes, $seconds);
                 }    
                 $patient->wait_time = $waitTime;
-    
+
                 $standardWaitTimeInSeconds = 7200; // 2 hours
                 if ($patient->Keterangan == 'Tunggu Obat Farmasi') {
                     $standardWaitTimeInSeconds = 3600; // 1 hour
@@ -124,28 +157,30 @@ class RanapController extends Controller
 
                 $progressPercentage = min(($waitTimeInSeconds / $standardWaitTimeInSeconds) * 100, 100);
                 $patient->progress_percentage = $progressPercentage;
-
-                if (in_array($patient->Keterangan, ['Tunggu Dokter', 'Observasi Pasien', 'Lain - Lain'])) {
-                    $groupedPatients['Keperawatan'][] = $patient;
-                } elseif ($patient->Keterangan == 'Tunggu Hasil Pemeriksaan Penunjang') {
-                    $groupedPatients['Jangdik'][] = $patient;
-                } elseif ($patient->Keterangan == 'Tunggu Obat Farmasi') {
-                    $groupedPatients['Farmasi'][] = $patient;
-                } elseif ($patient->Keterangan == 'Penyelesaian Administrasi Pasien (Billing)') {
-                    $groupedPatients['Kasir'][] = $patient;
-                }
             }
-        }
-        
-        // Hitung jumlah kartu tiap kolom.
-        $patientCounts = [
-            'Keperawatan' => count($groupedPatients['Keperawatan']),
-            'Jangdik' => count($groupedPatients['Jangdik']),
-            'Farmasi' => count($groupedPatients['Farmasi']),
-            'Kasir' => count($groupedPatients['Kasir']),
-        ];
 
-        // Color by CustomerType.
+        /* MEMBUAT URUTAN UNTUK TAMPILAN KOLOM KETERANGAN.*/
+            // Mapping data ke dalam array untuk diteruskan ke view
+            $groupedData = [];
+            foreach ($patients as $data) {
+                $groupedData[$data->Keterangan][] = $data;
+            }
+
+            // Urutan kustom untuk 'keterangan'
+            $order = [
+                'Tunggu Penunjang Medik',
+                'TungguKeperawatan',
+                'TungguFarmasi',
+                'TungguKasir',
+                'SelesaiKasir'
+            ];
+
+            // Ambil data yang sudah dikelompokkan (groupedData)
+            $groupedData = collect($groupedData)->sortBy(function($patients, $keterangan) use ($order) {
+                return array_search($keterangan, $order);
+            })->toArray();
+
+        /* WARNA HEADER KARTU BERDASARKAN customerType (PENJAMIN BAYAR). */
         $customerTypeColors = [
             'Rekanan' => 'orange',
             'Perusahaan' => 'pink',
@@ -158,6 +193,7 @@ class RanapController extends Controller
             'Pribadi' => 'lightblue',
         ];
 
-        return view('Ranap.ranap', compact('patients', 'groupedPatients', 'patientCounts', 'customerTypeColors'));
+        /* MENGIRIM DATA KE VIEW. */
+        return view('Ranap.ranap', compact('groupedData', 'customerTypeColors'));
     }
 }

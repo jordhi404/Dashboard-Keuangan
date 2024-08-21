@@ -18,7 +18,7 @@ Route::middleware(['web'])->group(function () {
         Route::get('/', [DashboardController::class, 'showDashboard'])->name('dashboard');
         Route::get('/keuangan', [trialCardController::class, 'showPatientCards'])->name('keuangan');
 
-        Route::get('/ranap', [RanapController::class, 'showPatientCards']) -> name('ranap');
+        Route::get('/ranap', [RanapController::class, 'showDashboardRanap']) -> name('ranap');
 
         Route::get('/Billing', [RanapController::class, 'showSelesaiBilling']) -> name('billing');
 
