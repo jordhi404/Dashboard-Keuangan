@@ -1,58 +1,59 @@
 // Fungsi menghitung waktu tunggu pasien sejak assign rencana pulang.
+console.log('window.patients:', window.patients);
+
 function updateTime() {
-    for (let group in window.patients) {
-        if (window.patients.hasOwnProperty(group)) {
-            window.patients[group].forEach(patient => {
-                if (patient.SelesaiBilling) {
-                    return;
-                }
+    if (window.patients && Object.keys(window.patients).length > 0) {
+        console.log('Updating time...');
+        for (let group in window.patients) {
+            if (window.patients.hasOwnProperty(group)) {
+                Object.values(window.patients[group]).forEach(patient => {
+                    if (patient !== null) {
+                        const waitTimeElementId = 'wait-time-' + patient.MedicalNo;
+                        const progressBarElementId = 'progress-bar-' + patient.MedicalNo;
 
-                var dischargeTime = new Date(patient.RencanaPulang).getTime();
-                var currentTime = new Date().getTime();
-                var waitTimeInSeconds = Math.floor((currentTime - dischargeTime) / 1000);
+                        var waitTimeElement = document.getElementById(waitTimeElementId);
+                        var progressBar = document.getElementById(progressBarElementId);
 
-                if (waitTimeInSeconds >= 0) { // Check if the wait time has started
-                    var hours = Math.floor(waitTimeInSeconds / 3600);
-                    var minutes = Math.floor((waitTimeInSeconds % 3600) / 60);
-                    var seconds = waitTimeInSeconds % 60;
+                        console.log(`Patient ID: ${patient.MedicalNo}`);
+                        console.log(`Wait Time Element ID: ${waitTimeElementId}`);
+                        console.log(`Progress Bar Element ID: ${progressBarElementId}`);
 
-                    var waitTimeFormatted = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
+                        if (waitTimeElement && progressBar) {
+                            var dischargeTime = new Date(patient.RencanaPulang).getTime();
+                            var currentTime = new Date().getTime();
+                            var waitTimeInSeconds = Math.floor((currentTime - dischargeTime) / 1000);
 
-                    document.getElementById('wait-time-' + patient.MedicalNo).innerHTML = waitTimeFormatted;
+                            var hours = Math.floor(waitTimeInSeconds / 3600);
+                            var minutes = Math.floor((waitTimeInSeconds % 3600) / 60);
+                            var seconds = waitTimeInSeconds % 60;
+                            var waitTimeFormatted = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
+                            waitTimeElement.innerHTML = waitTimeFormatted;
 
-                    // Set standard wait time based on patient category
-                    var standardWaitTimeInSeconds = 7200; // Default 2 hours
-                    if (patient.Keterangan == 'Tunggu Obat Farmasi') {
-                        standardWaitTimeInSeconds = 3600; // 1 hour
-                    } else if (patient.Keterangan == 'Penyelesaian Administrasi Pasien (Billing)') {
-                        standardWaitTimeInSeconds = 900; // 15 minutes
-                    } else if (patient.Keterangan == 'Tunggu Dokter' || patient.Keterangan == 'Observasi Pasien' || patient.Keterangan == 'Lain - Lain') {
-                        standardWaitTimeInSeconds = 900; // 15 minutes
-                    } else if (patient.Keterangan == 'Tunggu Hasil Pemeriksaan Penunjang') {
-                        standardWaitTimeInSeconds = 900; // 15 minutes
-                    }
+                            var standardWaitTimeInSeconds = 3600; // 1 hour for testing
+                            var progressPercentage = Math.min((waitTimeInSeconds / standardWaitTimeInSeconds) * 100, 100);
+                            progressBar.style.width = progressPercentage + '%';
 
-                    var progressPercentage = Math.min((waitTimeInSeconds / standardWaitTimeInSeconds) * 100, 100);
-
-                    var progressBar = document.getElementById('progress-bar-' + patient.MedicalNo);
-                    if (progressBar) {
-                        progressBar.style.width = progressPercentage + '%';
-                        progressBar.className = 'progress-bar';
-
-                        // Determine the color based on the wait time
-                        if (waitTimeInSeconds > standardWaitTimeInSeconds) {
-                            progressBar.classList.add('progress-bar-red');
+                            if (waitTimeInSeconds > standardWaitTimeInSeconds) {
+                                progressBar.classList.add('progress-bar-red');
+                            } else {
+                                progressBar.classList.add('progress-bar-blue');
+                            }
                         } else {
-                            progressBar.classList.add('progress-bar-blue');
+                            console.warn(`Element not found for ${patient.MedicalNo}`);
                         }
+                    } else {
+                        console.warn('Patient data is null.');
                     }
-                }
-            });
+                });
+            }
         }
+    } else {
+        console.warn('window.patients is empty or not defined.');
     }
 }
 
 setInterval(updateTime, 1000);
+
 
 // Fungsi popover untuk note pasien.
 document.addEventListener('DOMContentLoaded', function () {
@@ -62,13 +63,3 @@ document.addEventListener('DOMContentLoaded', function () {
         return new bootstrap.Popover(popoverTriggerEl);
     });
 });
-
-/* Set the width of the side navigation to 250px */
-function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-  }
-  
-  /* Set the width of the side navigation to 0 */
-  function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-  }
