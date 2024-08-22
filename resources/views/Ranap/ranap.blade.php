@@ -65,17 +65,21 @@
                                         </a>
                                     @endif
                                 </p>
-                                <p><strong>Wait Time:</strong><span id="wait-time-{{ $patient->MedicalNo }}"> {{ $patient->wait_time }} </span><br></p>
-                                <div class="progress mb-2">
-                                    <div id="progress-bar-{{ $patient->MedicalNo }}" 
-                                        class="progress-bar {{ $patient->progress_percentage > 100 ? 'progress-bar-red' : 'progress-bar-blue' }}"
-                                        role="progressbar"
-                                        style="width: {{ $patient->progress_percentage }}%"
-                                        aria-valuenow="{{ $patient->progress_percentage }}"                                            
-                                        aria-valuemin="0"
-                                        aria-valuemax="100">
+                                @if ($keterangan == 'SelesaiKasir')
+                                    <p><strong>Administrasi Selesai.</strong></p>
+                                @else
+                                    <p><strong>Wait Time:</strong><span id="wait-time-{{ $patient->MedicalNo }}"> {{ $patient->wait_time }} </span><br></p>
+                                    <div class="progress mb-2">
+                                        <div id="progress-bar-{{ $patient->MedicalNo }}" 
+                                            class="progress-bar {{ $patient->progress_percentage > 100 ? 'progress-bar-red' : 'progress-bar-blue' }}"
+                                            role="progressbar"
+                                            style="width: {{ $patient->progress_percentage }}%"
+                                            aria-valuenow="{{ $patient->progress_percentage }}"                                            
+                                            aria-valuemin="0"
+                                            aria-valuemax="100">
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             </div>
                         </div>
                     @endforeach 
@@ -87,9 +91,11 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('JS/script.js') }}"></script>
+
     <script>
-        window.patients = @json($patients); // Error tidak perlu dikhawatirkan.
+        window.patients = @json($allPatients); // Error tidak perlu dikhawatirkan.
+        console.log(window.patients);
     </script>
+    <script src="{{ asset('JS/script.js') }}"></script>
 </body>
 </html>

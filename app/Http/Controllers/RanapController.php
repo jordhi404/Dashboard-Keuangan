@@ -180,6 +180,13 @@ class RanapController extends Controller
                 return array_search($keterangan, $order);
             })->toArray();
 
+            $allPatients = [];
+            foreach ($groupedData as $patients) {
+                foreach ($patients as $patient) {
+                    $allPatients[] = $patient;
+                }
+            }
+
         /* WARNA HEADER KARTU BERDASARKAN customerType (PENJAMIN BAYAR). */
         $customerTypeColors = [
             'Rekanan' => 'orange',
@@ -193,7 +200,9 @@ class RanapController extends Controller
             'Pribadi' => 'lightblue',
         ];
 
+        
+
         /* MENGIRIM DATA KE VIEW. */
-        return view('Ranap.ranap', compact('groupedData', 'customerTypeColors'));
+        return view('Ranap.ranap', compact('groupedData', 'allPatients','customerTypeColors'));
     }
 }
