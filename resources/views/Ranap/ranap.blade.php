@@ -42,7 +42,7 @@
     </div>
     <div class="content-container">
         <div class="d-flex" style="gap: 20px;">
-            @foreach($groupedData as $keterangan => $patients)
+            @foreach($sortedFilteredData as $keterangan => $patients)
                 <div class="content-column">
                     <h3>{{ $keterangan }}</h3>
                     <hr class="border-5">
