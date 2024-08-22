@@ -166,24 +166,17 @@ class RanapController extends Controller
                 $groupedData[$data->Keterangan][] = $data;
             }
 
-            // Menampilkan keterangan selain SelesaiKasir.
-            $filteredGroupedData = [];
-            foreach($groupedData as $keterangan => $patients) {
-                if($keterangan != 'SelesaiKasir') {
-                    $filteredGroupedData[$keterangan] = $patients;
-                }
-            }
-
             // Urutan kustom untuk 'keterangan'
             $order = [
                 'Tunggu Penunjang Medik',
                 'TungguKeperawatan',
                 'TungguFarmasi',
                 'TungguKasir',
+                'SelesaiKasir'
             ];
 
             // Ambil data yang sudah dikelompokkan (groupedData)
-            $sortedFilteredData = collect($filteredGroupedData)->sortBy(function($patients, $keterangan) use ($order) {
+            $groupedData = collect($groupedData)->sortBy(function($patients, $keterangan) use ($order) {
                 return array_search($keterangan, $order);
             })->toArray();
 
@@ -207,7 +200,9 @@ class RanapController extends Controller
             'Pribadi' => 'lightblue',
         ];
 
+        
+
         /* MENGIRIM DATA KE VIEW. */
-        return view('Ranap.ranap', compact('sortedFilteredData', 'allPatients', 'customerTypeColors'));
+        return view('Ranap.ranap', compact('groupedData', 'allPatients','customerTypeColors'));
     }
 }
