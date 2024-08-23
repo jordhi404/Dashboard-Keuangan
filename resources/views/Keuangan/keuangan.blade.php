@@ -65,7 +65,7 @@
                                         </a>
                                     @endif
                                 </p>
-                                @if ($keterangan == 'SelesaiKasir')
+                                @if ($keterangan == 'Selesai Kasir')
                                     <p><strong>Administrasi Selesai.</strong></p>
                                 @else
                                     <p><strong>Wait Time:</strong><span id="wait-time-{{ $patient->MedicalNo }}"> {{ $patient->wait_time }} </span><br></p>

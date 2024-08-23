@@ -14,7 +14,7 @@ class KeuanganController extends Controller
     /* CONNECTION KE DATABASE SQLSRV UNTUK MENGAMBIL DATA PASIEN. */
     private function getPatientData()
     {
-        $cacheKey = 'patientRanap';
+        $cacheKey = 'keuanganRanap';
 
         return Cache::remember($cacheKey, 300, function() {
             return DB::connection('sqlsrv')
@@ -105,12 +105,12 @@ class KeuanganController extends Controller
                     RencanaPulang,
                     NoteText,
                     CASE
-                        WHEN Keperawatan IS NOT NULL THEN 'TungguKeperawatan'
-                        WHEN TungguJangdik IS NOT NULL THEN 'TungguJangdik'
-                        WHEN TungguFarmasi IS NOT NULL THEN 'TungguFarmasi'
-                        WHEN RegistrationStatus = 0 AND OutStanding > 0 AND SelesaiBilling IS NULL THEN 'TungguKasir'
-                        WHEN RegistrationStatus = 1 AND OutStanding = 0 AND SelesaiBilling IS NULL THEN 'TungguKasir'
-                        WHEN RegistrationStatus = 1 AND OutStanding = 0 AND SelesaiBilling IS NOT NULL THEN 'SelesaiKasir'
+                        WHEN Keperawatan IS NOT NULL THEN 'Tunggu Keperawatan'
+                        WHEN TungguJangdik IS NOT NULL THEN 'Tunggu Jangdik'
+                        WHEN TungguFarmasi IS NOT NULL THEN 'Tunggu Farmasi'
+                        WHEN RegistrationStatus = 0 AND OutStanding > 0 AND SelesaiBilling IS NULL THEN 'Tunggu Kasir'
+                        WHEN RegistrationStatus = 1 AND OutStanding = 0 AND SelesaiBilling IS NULL THEN 'Tunggu Kasir'
+                        WHEN RegistrationStatus = 1 AND OutStanding = 0 AND SelesaiBilling IS NOT NULL THEN 'Selesai Kasir'
                     END AS Keterangan
                 FROM Dashboard_CTE
             ");
@@ -118,7 +118,7 @@ class KeuanganController extends Controller
     }
 
     /* FUNCTION UNTUK MENAMPILKAN DATA DI DASHBOARD RANAP. */
-    public function showdashboardKeuangan() {
+    public function showDashboardKeuangan() {
 
         /* MENGAMBIL DATA PASIEN UNTUK DITAMPILKAN. */
             $patients = $this->getPatientData();
@@ -134,8 +134,8 @@ class KeuanganController extends Controller
                 // Menghitung waktu tunggu
                 if ($dischargeTime->gt($currentTime)) {
                     // Jika waktu rencana pulang di masa depan
-                    $waitTime = '00:00:00'; // Waktu tunggu belum dimulai
                     $waitTimeInSeconds = 0; // Inisialisasi waitTimeInSeconds sebagai 0.
+                    $waitTime = '00:00:00'; // Waktu tunggu belum dimulai
                 } else {
                     // Menghitung selisih waktu
                     $waitTimeInSeconds = $dischargeTime->diffInSeconds($currentTime);
@@ -168,11 +168,11 @@ class KeuanganController extends Controller
 
             // Urutan kustom untuk 'keterangan'
             $order = [
-                'Tunggu Penunjang Medik',
-                'TungguKeperawatan',
-                'TungguFarmasi',
-                'TungguKasir',
-                'SelesaiKasir'
+                'Tunggu Jangdik',
+                'Tunggu Keperawatan',
+                'Tunggu Farmasi',
+                'Tunggu Kasir',
+                'Selesai Kasir'
             ];
 
             // Ambil data yang sudah dikelompokkan (groupedData)
