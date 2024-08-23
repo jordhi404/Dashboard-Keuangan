@@ -26,17 +26,21 @@ class AuthController extends Controller
         {
             Auth::login($employee);
             if (Auth::check()) {
-                if (Auth::user()->kode_bagian == 'k45' || Auth::user()->kode_bagian == 'os26') {
-                    return redirect()->intended(route('dashboard'));
-                } 
-                elseif (Auth::user()->kode_bagian == 'k2' || Auth::user()->kode_bagian == 'os15') {
-                    return redirect() -> intended(route('keuangan'));
-                }
-                elseif (Auth::user()->kode_bagian == 'k32') {
-                    return redirect() -> route('cs');
-                }
-                elseif (Auth::user()->kode_bagian == 'k13' || Auth::user()->kode_bagian == 'k14' || Auth::user()->kode_bagian == 'k15' || Auth::user()->kode_bagian == 'k16') {
-                    return redirect() -> route('ranap');
+                switch (Auth::user()->kode_bagian) {
+                    case 'k45': // IT
+                        return redirect()->intended(route('dashboard'));
+                    case 'k2': // Keuangan
+                        return redirect()->intended(route('keuangan'));
+                    case 'k32': // Housekeeping
+                        return redirect()->route('cs');
+                    case 'k13':
+                    case 'k14':
+                    case 'k15':
+                    case 'k16': // Inpatient (Ranap)
+                        return redirect()->route('ranap');
+                    default:
+                        Auth::logout();
+                        return redirect()->route('login')->withErrors(['error' => 'Unauthorized access.']);
                 }
             }
         } 
@@ -54,5 +58,4 @@ class AuthController extends Controller
         
         return redirect()->route('login');
     }
-
 }
