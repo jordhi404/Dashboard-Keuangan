@@ -16,23 +16,25 @@ function updateTime() {
                         var currentTime = new Date().getTime();
                         var waitTimeInSeconds = Math.floor((currentTime - dischargeTime) / 1000);
 
-                        var hours = Math.floor(waitTimeInSeconds / 3600);
-                        var minutes = Math.floor((waitTimeInSeconds % 3600) / 60);
-                        var seconds = waitTimeInSeconds % 60;
-                        var waitTimeFormatted = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
+                        if(waitTimeInSeconds >= 0) {
+                            var hours = Math.floor(waitTimeInSeconds / 3600);
+                            var minutes = Math.floor((waitTimeInSeconds % 3600) / 60);
+                            var seconds = waitTimeInSeconds % 60;
+                            var waitTimeFormatted = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
 
-                        waitTimeElement.innerHTML = waitTimeFormatted;
+                            waitTimeElement.innerHTML = waitTimeFormatted;
 
-                        var standardWaitTimeInSeconds = (patient.keterangan === 'TungguFarmasi') ? 3600 : 900; // 1 jam untuk TungguFarmasi, 15 menit untuk lainnya
-                        var progressPercentage = Math.min((waitTimeInSeconds / standardWaitTimeInSeconds) * 100, 100);
-                        progressBar.style.width = progressPercentage + '%';
+                            var standardWaitTimeInSeconds = (patient.keterangan === 'TungguFarmasi') ? 3600 : 900; // 1 jam untuk TungguFarmasi, 15 menit untuk lainnya
+                            var progressPercentage = Math.min((waitTimeInSeconds / standardWaitTimeInSeconds) * 100, 100);
+                            progressBar.style.width = progressPercentage + '%';
 
-                        // Reset class progress bar
-                        progressBar.classList.remove('progress-bar-red', 'progress-bar-blue');
-                        if (waitTimeInSeconds > standardWaitTimeInSeconds) {
-                            progressBar.classList.add('progress-bar-red');
-                        } else {
-                            progressBar.classList.add('progress-bar-blue');
+                            // Reset class progress bar
+                            progressBar.classList.remove('progress-bar-red', 'progress-bar-blue');
+                            if (waitTimeInSeconds > standardWaitTimeInSeconds) {
+                                progressBar.classList.add('progress-bar-red');
+                            } else {
+                                progressBar.classList.add('progress-bar-blue');
+                            }
                         }
                     }
                 }

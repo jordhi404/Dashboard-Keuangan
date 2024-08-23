@@ -105,12 +105,12 @@ class RanapController extends Controller
                     RencanaPulang,
                     NoteText,
                     CASE
-                        WHEN Keperawatan IS NOT NULL THEN 'TungguKeperawatan'
-                        WHEN TungguJangdik IS NOT NULL THEN 'TungguJangdik'
-                        WHEN TungguFarmasi IS NOT NULL THEN 'TungguFarmasi'
-                        WHEN RegistrationStatus = 0 AND OutStanding > 0 AND SelesaiBilling IS NULL THEN 'TungguKasir'
-                        WHEN RegistrationStatus = 1 AND OutStanding = 0 AND SelesaiBilling IS NULL THEN 'TungguKasir'
-                        WHEN RegistrationStatus = 1 AND OutStanding = 0 AND SelesaiBilling IS NOT NULL THEN 'SelesaiKasir'
+                        WHEN Keperawatan IS NOT NULL THEN 'Tunggu Keperawatan'
+                        WHEN TungguJangdik IS NOT NULL THEN 'Tunggu Jangdik'
+                        WHEN TungguFarmasi IS NOT NULL THEN 'Tunggu Farmasi'
+                        WHEN RegistrationStatus = 0 AND OutStanding > 0 AND SelesaiBilling IS NULL THEN 'Tunggu Kasir'
+                        WHEN RegistrationStatus = 1 AND OutStanding = 0 AND SelesaiBilling IS NULL THEN 'Tunggu Kasir'
+                        WHEN RegistrationStatus = 1 AND OutStanding = 0 AND SelesaiBilling IS NOT NULL THEN 'Selesai Kasir'
                     END AS Keterangan
                 FROM Dashboard_CTE
             ");
@@ -168,11 +168,11 @@ class RanapController extends Controller
 
             // Urutan kustom untuk 'keterangan'
             $order = [
-                'Tunggu Penunjang Medik',
-                'TungguKeperawatan',
-                'TungguFarmasi',
-                'TungguKasir',
-                'SelesaiKasir'
+                'Tunggu Jangdik',
+                'Tunggu Keperawatan',
+                'Tunggu Farmasi',
+                'Tunggu Kasir',
+                'Selesai Kasir'
             ];
 
             // Ambil data yang sudah dikelompokkan (groupedData)
