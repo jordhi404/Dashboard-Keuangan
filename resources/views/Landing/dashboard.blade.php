@@ -24,7 +24,7 @@
 
     <div class="container">
         <div class="navbar">
-            <h1>Dashboard untuk admin</h1>
+            <h1>Menu Dashboard</h1>
             <ul class="nav ms-auto">
                 @auth
                     <li class="dropdown">
