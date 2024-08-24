@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
-class RanapController extends Controller
+class KeuanganController extends Controller
 {
     /* CONNECTION KE DATABASE SQLSRV UNTUK MENGAMBIL DATA PASIEN. */
     private function getPatientData()
     {
-        $cacheKey = 'patientRanap';
+        $cacheKey = 'keuanganRanap';
 
         return Cache::remember($cacheKey, 300, function() {
             return DB::connection('sqlsrv')
@@ -118,7 +118,7 @@ class RanapController extends Controller
     }
 
     /* FUNCTION UNTUK MENAMPILKAN DATA DI DASHBOARD RANAP. */
-    public function showdashboardRanap() {
+    public function showDashboardKeuangan() {
 
         /* MENGAMBIL DATA PASIEN UNTUK DITAMPILKAN. */
             $patients = $this->getPatientData();
@@ -134,8 +134,8 @@ class RanapController extends Controller
                 // Menghitung waktu tunggu
                 if ($dischargeTime->gt($currentTime)) {
                     // Jika waktu rencana pulang di masa depan
-                    $waitTime = '00:00:00'; // Waktu tunggu belum dimulai
                     $waitTimeInSeconds = 0; // Inisialisasi waitTimeInSeconds sebagai 0.
+                    $waitTime = '00:00:00'; // Waktu tunggu belum dimulai
                 } else {
                     // Menghitung selisih waktu
                     $waitTimeInSeconds = $dischargeTime->diffInSeconds($currentTime);
@@ -203,6 +203,6 @@ class RanapController extends Controller
         
 
         /* MENGIRIM DATA KE VIEW. */
-        return view('Ranap.ranap', compact('groupedData', 'allPatients','customerTypeColors'));
+        return view('Keuangan.keuangan', compact('groupedData', 'allPatients','customerTypeColors'));
     }
 }

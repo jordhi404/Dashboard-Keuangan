@@ -1,5 +1,4 @@
 body {
-    background: linear-gradient(to right, #eeeded, lightgrey);
     font-family: Arial, sans-serif;
     height: 100svh;
     padding: 0;
@@ -16,10 +15,10 @@ body {
 }
 .navbar p {
     font-style:italic;
-    font-size: 25px
+    font-size: 25px;
 }
 .navbar h1 {
-    font-weight: 400
+    font-weight: 400;
 }
 
 .navbar {
@@ -28,7 +27,7 @@ body {
     margin: 0;
     padding-left: 20px;
     padding-top: 20px;
-    background: linear-gradient(to bottom, rgb(156, 156, 156), rgb(190, 190, 190));
+    background: whitesmoke;
     border-radius: 2px;
 }
 
@@ -42,7 +41,7 @@ body {
     display: flex;
     flex-direction: column;
     padding-top: 5px;
-    background: linear-gradient(to bottom, rgb(190, 190, 190), white);
+    background: whitesmoke;
 }
 
 .card {
@@ -51,17 +50,15 @@ body {
     margin-bottom: 10px;
 }
 
-.card-header .fas.fa-star {
-    margin-left: 10px;
-    font-size: 1.2em;
-    justify-content: end;
+.card-header {
+    margin-left: 0;
+    font-size: 17px;
 }
 
 .card-body {
     min-height: 150px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
 }
 
 .progress-bar {
@@ -88,51 +85,3 @@ body {
 .more-link:hover {
     text-decoration: underline;
 }
-
-/* The side navigation menu */
-.sidenav {
-    height: 100%; /* 100% Full-height */
-    width: 0; /* 0 width - change this with JavaScript */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Stay on top */
-    top: 0; /* Stay at the top */
-    left: 0;
-    background: linear-gradient(to bottom, rgb(156, 156, 156), rgb(190, 190, 190), white);
-    overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
-    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
-}
-  
-.sidenav p{
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 23px;
-    color: #2e2e2e;
-    display: block;
-    transition: 0.3s;
-}
-
-.sidenav button, .sidenav a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 20px;
-    color: #2e2e2e;
-    display: block;
-    transition: 0.3s;
-}
-  
-/* Position and style the close button (top right corner) */
-.sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-}
-  
-/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-@media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
-}
-  

@@ -4,9 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HKController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RanapController;
-// Trial card
+use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\trialCardController;
 
 Route::middleware(['web'])->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login')->middleware('guest', 'no-cache');
@@ -16,11 +15,10 @@ Route::middleware(['web'])->group(function () {
 
     Route::middleware('auth', 'no-cache')->group(function () {
         Route::get('/', [DashboardController::class, 'showDashboard'])->name('dashboard');
-        Route::get('/keuangan', [trialCardController::class, 'showPatientCards'])->name('keuangan');
 
-        Route::get('/ranap', [RanapController::class, 'showPatientCards'])->name('ranap');
+        Route::get('/keuangan', [KeuanganController::class, 'showDashboardKeuangan'])->name('keuangan');
 
-        Route::get('/Billing', [RanapController::class, 'showSelesaiBilling'])->name('billing');
+        Route::get('/ranap', [RanapController::class, 'showDashboardRanap']) -> name('ranap');
 
         Route::get('/hk', [HKController::class, 'room'])->name('hk');
     });
