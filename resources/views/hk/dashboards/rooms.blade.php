@@ -95,7 +95,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="d-flex justify-content-center mb-2">
+        <div class="d-flex justify-content-center">
             <form action="{{ route('hk') }}" method="GET" class="mx-2">
                 <!-- Include all existing query parameters as hidden fields in pagination -->
                 <div class="input-group flex-column flex-md-row">
@@ -116,6 +116,9 @@
             </form>
             <div class="mx-2">
                 {{ $rooms->appends(request()->query())->links() }}
+            </div>
+            <div class="mt-2">
+                Show {{ $rooms->count() }} of {{ $rooms->total() }} orders
             </div>
         </div>
     </div>
