@@ -24,35 +24,37 @@ body {
 
 .navbar {
     justify-content: space-between;
-    align-items: center;
+    align-items: start;
     margin: 0;
     padding-left: 20px;
     padding-top: 20px;
-    background: linear-gradient(to bottom, white, rgb(190, 190, 190));
+    background: linear-gradient(to bottom, rgb(156, 156, 156), rgb(190, 190, 190));
     border-radius: 2px;
 }
-.dropdown {
-    margin-right: 20px;
-    margin-bottom: 10px;
+
+.nav {
+    margin-right: 30px;
 }
 
 .content-container {
     margin: 0;
-    padding: 10px;
+    padding: 30px;
     display: flex;
     flex-direction: column;
     padding-top: 5px;
     background: linear-gradient(to bottom, rgb(190, 190, 190), white);
 }
 
-.card-container {
-    margin-bottom: 20px;
-}
-
 .card {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     width: 300px;
     margin-bottom: 10px;
+}
+
+.card-header .fas.fa-star {
+    margin-left: 10px;
+    font-size: 1.2em;
+    justify-content: end;
 }
 
 .card-body {
@@ -76,7 +78,61 @@ body {
 .progress-bar-blue {
     background-color: blue;
 }
-
-.btn {
-    width: min-content;
+  
+.more-link {
+    color: #007bff;
+    text-decoration: none;
+    cursor: pointer;
 }
+  
+.more-link:hover {
+    text-decoration: underline;
+}
+
+/* The side navigation menu */
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #dddddd; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+  
+.sidenav p, .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 23px;
+    color: #2e2e2e;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav button {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #2e2e2e;
+    display: block;
+    transition: 0.3s;
+}
+  
+/* Position and style the close button (top right corner) */
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+  
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+  

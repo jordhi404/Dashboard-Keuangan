@@ -26,23 +26,36 @@ class AuthController extends Controller
         {
             Auth::login($employee);
             if (Auth::check()) {
-                // return redirect()->intended(route('index'));
-                return redirect()->intended(route('dashboard'));
+                switch (Auth::user()->kode_bagian) {
+                    case 'k45': // IT
+                        return redirect()->intended(route('dashboard'));
+                    case 'k2': // Keuangan
+                        return redirect()->intended(route('keuangan'));
+                    case 'k32': // Housekeeping
+                        return redirect()->route('hk');
+                    case 'k13':
+                    case 'k14':
+                    case 'k15':
+                    case 'k16': // Inpatient (Ranap)
+                        return redirect()->route('ranap');
+                    default:
+                        Auth::logout();
+                        return redirect()->route('login')->withErrors(['error' => 'Unauthorized access.']);
+                }
             }
-        } 
+        }
         else
         {
             return back()->withErrors(['error' => 'NIK atau password salah.'])->withInput();
         }
     }
 
-    public function logout(Request $request) 
+    public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
+
         return redirect()->route('login');
     }
-
 }

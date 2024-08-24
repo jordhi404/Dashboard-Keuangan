@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'pgsql'),
+    'default' => env('DB_CONNECTION', 'sqlsrv'),
 
     /*
     |--------------------------------------------------------------------------
@@ -96,15 +96,14 @@ return [
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',
-            'url' => env('SQLSRV_URL'),
             'host' => env('SQLSRV_HOST', 'localhost'),
-            'port' => env('SQLSRV_PORT', '1433'),
             'database' => env('SQLSRV_DATABASE', 'forge'),
             'username' => env('SQLSRV_USERNAME', 'forge'),
             'password' => env('SQLSRV_PASSWORD', ''),
-            'charset' => env('SQLSRV_CHARSET', 'utf8'),
+            'charset' => 'utf8',
             'prefix' => '',
-            'prefix_indexes' => true,
+            'encrypt' => 'yes',
+            'trust_server_certificate' => true
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
@@ -144,7 +143,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_') . '_database_'),
         ],
 
         'default' => [

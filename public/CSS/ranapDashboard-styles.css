@@ -1,0 +1,87 @@
+body {
+    font-family: Arial, sans-serif;
+    height: 100svh;
+    padding: 0;
+    margin: 0; 
+}
+.container {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+}
+.navbar .d-flex.flex-column {
+    margin-right: auto;
+}
+.navbar p {
+    font-style:italic;
+    font-size: 25px;
+}
+.navbar h1 {
+    font-weight: 400;
+}
+
+.navbar {
+    justify-content: space-between;
+    align-items: start;
+    margin: 0;
+    padding-left: 20px;
+    padding-top: 20px;
+    background: whitesmoke;
+    border-radius: 2px;
+}
+
+.nav {
+    margin-right: 30px;
+}
+
+.content-container {
+    margin: 0;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 5px;
+    background: whitesmoke;
+}
+
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    width: 300px;
+    margin-bottom: 10px;
+}
+
+.card-header {
+    margin-left: 0;
+    font-size: 17px;
+}
+
+.card-body {
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+}
+
+.progress-bar {
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 2px;
+}
+
+.progress-bar-red {
+    background-color: rgb(140, 27, 27);
+}
+
+.progress-bar-blue {
+    background-color: blue;
+}
+  
+.more-link {
+    color: #007bff;
+    text-decoration: none;
+    cursor: pointer;
+}
+  
+.more-link:hover {
+    text-decoration: underline;
+}
