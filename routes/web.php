@@ -18,9 +18,9 @@ Route::middleware(['web'])->group(function () {
 
         Route::get('/keuangan', [KeuanganController::class, 'showDashboardKeuangan'])->name('keuangan');
 
-        Route::get('/ranap', [RanapController::class, 'showDashboardRanap']) -> name('ranap');
+        Route::get('/ranap', [RanapController::class, 'showDashboardRanap'])->name('ranap');
 
-        Route::get('/hk', [HKController::class, 'room'])->name('hk');
+        Route::get('/hk', [HKController::class, 'showDashboard'])->name('hk');
     });
 });
 

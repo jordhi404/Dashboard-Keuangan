@@ -17,7 +17,7 @@ class HKController extends Controller
         $this->hkModel = $hkModel;
     }
 
-    public function room(Request $request)
+    public function showDashboard(Request $request)
     {
         $pages = [7, 10, 25, 50, 100];
 
