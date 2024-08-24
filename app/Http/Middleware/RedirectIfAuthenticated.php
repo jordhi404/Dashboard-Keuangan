@@ -23,5 +23,5 @@ class RedirectIfAuthenticated
             'Pragma' => 'no-cache',
         ]);
         return $response;
-    }    
+    }
 }

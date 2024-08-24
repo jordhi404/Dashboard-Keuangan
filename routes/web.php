@@ -5,7 +5,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HKController;
 use App\Http\Controllers\RanapController;
-
 use App\Http\Controllers\KeuanganController;
 
 Route::middleware(['web'])->group(function () {
@@ -21,6 +20,6 @@ Route::middleware(['web'])->group(function () {
 
         Route::get('/ranap', [RanapController::class, 'showDashboardRanap']) -> name('ranap');
 
-        Route::get('/CS', [HKController::class, 'showHKDashboard']) -> name('cs');
+        Route::get('/cs', [HKController::class, 'showHKDashboard']) -> name('cs');
     });  
 });
