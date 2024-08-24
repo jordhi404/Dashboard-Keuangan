@@ -16,7 +16,7 @@ class RanapController extends Controller
     {
         $cacheKey = 'patientRanap';
 
-        return Cache::remember($cacheKey, 300, function() {
+        return Cache::remember($cacheKey, 240, function() {
             return DB::connection('sqlsrv')
                 -> select("
                 WITH Dashboard_CTE AS (
@@ -199,8 +199,6 @@ class RanapController extends Controller
             'BPJS - Kemenkes' => 'yellow',
             'Pribadi' => 'lightblue',
         ];
-
-        
 
         /* MENGIRIM DATA KE VIEW. */
         return view('Ranap.ranap', compact('groupedData', 'allPatients','customerTypeColors'));

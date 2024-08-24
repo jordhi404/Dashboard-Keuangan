@@ -23,7 +23,7 @@ Route::middleware(['web'])->group(function () {
         Route::get('/hk', [HKController::class, 'showDashboard'])->name('hk');
     });
 });
-
+       
 // Route::get('/test-sqlserver', function () {
 //     try {
 //         DB::connection('sqlsrv')->getPdo();
@@ -32,3 +32,4 @@ Route::middleware(['web'])->group(function () {
 //         die("Could not connect to the database. Error: " . $e->getMessage());
 //     }
 // });
+

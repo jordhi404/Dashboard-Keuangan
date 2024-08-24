@@ -16,7 +16,7 @@ class KeuanganController extends Controller
     {
         $cacheKey = 'keuanganRanap';
 
-        return Cache::remember($cacheKey, 300, function() {
+        return Cache::remember($cacheKey, 240, function() {
             return DB::connection('sqlsrv')
                 -> select("
                 WITH Dashboard_CTE AS (

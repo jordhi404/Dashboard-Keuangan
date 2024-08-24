@@ -7,7 +7,7 @@
     <title>Dashboard Ranap</title>
     <link rel="icon" href="{{ asset('Logo_img/logo_rs.jpg') }}" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="CSS/ranapDashboard-styles.css">
+    <link rel="stylesheet" href="CSS/dashboards-style.css">
 </head>
 <body>
     <div class="container">
