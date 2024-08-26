@@ -212,7 +212,7 @@ class RanapController extends Controller
             'Pribadi' => 'lightblue',
         ];
 
-        //dd($user);
+        //dd($patients);
 
         /* MENGIRIM DATA KE VIEW. */
         return view('Ranap.ranap', compact('groupedData', 'allPatients','customerTypeColors'));
@@ -223,8 +223,8 @@ class RanapController extends Controller
     {
         // Contoh mapping kode_bagian ke ServiceUnitName
         $serviceUnits = [
-            'k13' => 'TJAN TIMUR',
-            'k14' => 'TJAN BARAT',
+            'k13' => 'TJAN KHEE SWAN TIMUR',
+            'k14' => 'TJAN KHEE SWAN BARAT',
             'k15' => 'UPI DEWASA',
             'k16' => 'KWEE HAN TIONG',
             'k41' => 'RUANG ASA',
