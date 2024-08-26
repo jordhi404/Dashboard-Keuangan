@@ -33,6 +33,7 @@ class RanapController extends Controller
                                     THEN CAST(cv.PlanDischargeDate AS VARCHAR) + ' ' + CAST(cv.PlanDischargeTime AS VARCHAR)
                                 ELSE CAST(cv.PlanDischargeDate AS VARCHAR) + ' ' + CAST(cv.PlanDischargeTime AS VARCHAR)
                             END,
+                        CatRencanaPulang = cv.PlanDischargeNotes,
                         Keperawatan =
                             (SELECT TOP 1 TransactionNo 
                             FROM PatientChargesHD
@@ -78,8 +79,7 @@ class RanapController extends Controller
                             WHEN sc.StandardCodeName = '' OR sc.StandardCodeName IS NULL
                                 THEN ''
                             ELSE sc.StandardCodeName
-                        END,
-                        pvn.NoteText
+                        END
                     FROM vBed a
                     LEFT JOIN vPatient p ON p.MRN = a.MRN
                     LEFT JOIN PatientNotes pn ON pn.MRN = a.MRN
@@ -102,7 +102,7 @@ class RanapController extends Controller
                     CustomerType,
                     ChargeClassName,
                     RencanaPulang,
-                    NoteText,
+                    CatRencanaPulang,
                     CASE
                         WHEN Keperawatan IS NOT NULL THEN 'Tunggu Keperawatan'
                         WHEN TungguJangdik IS NOT NULL THEN 'Tunggu Jangdik'
@@ -138,7 +138,7 @@ class RanapController extends Controller
 
             foreach ($patients as $patient) {
                 // Patient's short note.
-                $patient->short_note = $patient->NoteText ? Str::limit($patient->NoteText, 10) : '-';
+                $patient->short_note = $patient->CatRencanaPulang ? Str::limit($patient->CatRencanaPulang, 10) : '-';
 
                 // Mengambil waktu rencana pulang
                 $dischargeTime = Carbon::parse($patient->RencanaPulang);

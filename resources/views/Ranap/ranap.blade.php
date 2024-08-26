@@ -56,11 +56,11 @@
                                 <p>Rencana Pulang: {{ $patient->RencanaPulang }}</p>
                                 <p>
                                     <strong>Note:</strong> {{ $patient->short_note }}
-                                    @if ($patient->NoteText !== null)
+                                    @if ($patient->CatRencanaPulang !== null)
                                         <a class="more-link"
                                             data-bs-toggle="popover"
                                             title="{{ $patient->PatientName }}'s Note"
-                                            data-bs-content="{{ $patient->NoteText }}">
+                                            data-bs-content="{{ $patient->CatRencanaPulang }}">
                                             selengkapnya
                                         </a>
                                     @endif
