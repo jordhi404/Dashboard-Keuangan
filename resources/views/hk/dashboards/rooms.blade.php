@@ -5,7 +5,7 @@
             <div class="custom-inline-form">
                 <form id="form-order" action="{{ route('hk') }}" method="GET" class="col-12 col-md-12">
                     <div class="input-group flex-column flex-md-row justify-content-start">
-                        <div class="col-12 col-md-2 mb-2">
+                        <div class="col-2 col-md-2 mb-2 mx-1">
                             <label for="service_unit" class="form-label">Bangsal</label>
                             <select class="form-select" id="service_unit" name="service_unit"
                                 aria-label="Default select example" onchange="this.form.submit()">
@@ -18,7 +18,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-12 col-md-2 mb-2">
+                        <div class="col-2 col-md-2 mb-2">
                             <label for="room" class="form-label">Semua</label>
                             <select class="form-select" id="room" name="room" aria-label="Default select example"
                                 onchange="this.form.submit()">
@@ -40,9 +40,21 @@
                 <thead>
                     <tr>
                         <th scope="col" class="align-middle">No</th>
-                        <th scope="col" class="align-middle">Bangsal</th>
-                        <th scope="col" class="align-middle">Kode Ruangan</th>
-                        <th scope="col" class="align-middle">Kode Bed</th>
+                        <th scope="col-md-12" class="align-middle">
+                            <a href="@sortableCustom('hk', 'ServiceUnitName')" style="color: black" class="btn text-dark"><strong>Bangsal <i
+                                        class="fa-solid fa-sort dark"></i></strong>
+                            </a>
+                        </th>
+                        <th scope="col-md-12" class="align-middle">
+                            <a href="@sortableCustom('hk', 'RoomCode')" style="color: black" class="btn text-dark"><strong>Kode Ruang <i
+                                        class="fa-solid fa-sort dark"></i></strong>
+                            </a>
+                        </th>
+                        <th scope="col-md-12" class="align-middle">
+                            <a href="@sortableCustom('hk', 'BedCode')" style="color: black" class="btn text-dark"><strong>Kode Bed <i
+                                        class="fa-solid fa-sort dark"></i></strong>
+                            </a>
+                        </th>
                         <th scope="col-md-12" style="width: 20%" class="align-middle">
                             <a href="@sortableCustom('hk', 'DurationOrder')" style="color: black" class="btn text-dark"><strong>Progress <i
                                         class="fa-solid fa-sort dark"></i></strong>
