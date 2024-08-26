@@ -230,6 +230,8 @@ class RanapController extends Controller
             'k15' => 'UPI DEWASA',
             'k16' => 'KWEE HAN TIONG',
             'k41' => 'RUANG ASA',
+            'k58' => 'PERAWATAN ANAK',
+            'k59' => 'PERAWATAN IBU',
         ];
 
         return $serviceUnits[$kodeBagian] ?? null;
