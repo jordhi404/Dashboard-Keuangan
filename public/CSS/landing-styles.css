@@ -1,5 +1,5 @@
 body {
-    background: linear-gradient(to right, #eeeded, lightgrey, grey);
+    background: linear-gradient(60deg, rgb(77, 241, 143), rgb(186, 243, 106), rgb(77, 241, 143));
     font-family: Arial, sans-serif;
     background-size: cover;
     height: 100svh;
