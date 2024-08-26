@@ -55,18 +55,35 @@
         </div>
         <div class="content-container text-center">
             <div class="logo-container mt-5">
-                <a href="{{ route('keuangan') }}" class="logo-link">
-                    <img src="{{ asset('Logo_img/money.png') }}" alt="Keuangan">
-                    <p>Dashboard Keuangan</p>
-                </a>
-                <a href="{{ route('hk') }}" class="logo-link">
-                    <img src="{{ asset('Logo_img/house-keeping.png') }}" alt="HK">
-                    <p>Dashboard House Keeping</p>
-                </a>
-                <a href="{{ route('ranap') }}" class="logo-link">
-                    <img src="{{ asset('Logo_img/hospital-bed.png') }}" alt="Ranap">
-                    <p>Dashboard Ranap</p>
-                </a>
+                @if(Auth::user()->kode_bagian === 'k45')
+                    <a href="{{ route('keuangan') }}" class="logo-link">
+                        <img src="{{ asset('Logo_img/money.png') }}" alt="Keuangan">
+                        <p>Dashboard Keuangan</p>
+                    </a>
+                    <a href="{{ route('hk') }}" class="logo-link">
+                        <img src="{{ asset('Logo_img/house-keeping.png') }}" alt="HK">
+                        <p>Dashboard House Keeping</p>
+                    </a>
+                    <a href="{{ route('ranap') }}" class="logo-link">
+                        <img src="{{ asset('Logo_img/hospital-bed.png') }}" alt="Ranap">
+                        <p>Dashboard Ranap</p>
+                    </a>
+                @elseif(Auth::user()->kode_bagian === 'k2')
+                    <a href="{{ route('keuangan') }}" class="logo-link">
+                        <img src="{{ asset('Logo_img/money.png') }}" alt="Keuangan">
+                        <p>Dashboard Keuangan</p>
+                    </a>
+                @elseif(Auth::user()->kode_bagian === 'k13' || Auth::user()->kode_bagian === 'k14' || Auth::user()->kode_bagian === 'k15' || Auth::user()->kode_bagian === 'k16' || Auth::user()->kode_bagian === 'k41' || Auth::user()->kode_bagian === 'k58' || Auth::user()->kode_bagian === 'k59')
+                    <a href="{{ route('ranap') }}" class="logo-link">
+                        <img src="{{ asset('Logo_img/hospital-bed.png') }}" alt="Ranap">
+                        <p>Dashboard Ranap</p>
+                    </a>
+                @elseif(Auth::user()->kode_bagian === 'k32')
+                    <a href="{{ route('hk') }}" class="logo-link">
+                        <img src="{{ asset('Logo_img/house-keeping.png') }}" alt="HK">
+                        <p>Dashboard House Keeping</p>
+                    </a>
+                @endif
             </div>
         </div>
     </div>
