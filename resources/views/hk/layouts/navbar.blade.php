@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-secondary bg-gradient">
+<nav class="navbar navbar-expand-lg navbar-light bg-success bg-gradient">
     <div class="container-fluid">
         <a class="navbar-brand text-white" href="{{ route('hk') }}"> <img
                 src="{{ asset('Logo_img/house_keeping_white.png') }}" alt="HK"
