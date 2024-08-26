@@ -32,11 +32,12 @@ class AuthController extends Controller
                     case 'k2': // Keuangan
                         return redirect()->intended(route('keuangan'));
                     case 'k32': // Housekeeping
-                        return redirect()->route('cs');
+                        return redirect()->route('hk');
                     case 'k13':
                     case 'k14':
                     case 'k15':
                     case 'k16': // Inpatient (Ranap)
+                    case 'k41': // Inpatient (Ranap)
                         return redirect()->route('ranap');
                     default:
                         Auth::logout();

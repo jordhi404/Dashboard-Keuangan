@@ -52,7 +52,7 @@
                     <img src="{{ asset('Logo_img/money.png') }}" alt="Keuangan">
                     <p>Dashboard Keuangan</p>
                 </a>
-                <a href="{{ route('cs') }}" class="logo-link">
+                <a href="{{ route('hk') }}" class="logo-link">
                     <img src="{{ asset('Logo_img/house-keeping.png') }}" alt="HK">
                     <p>Dashboard House Keeping</p>
                 </a>
