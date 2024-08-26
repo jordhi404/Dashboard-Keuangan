@@ -230,6 +230,7 @@ class RanapController extends Controller
             'k41' => 'RUANG ASA',
             'k58' => 'PERAWATAN ANAK',
             'k59' => 'PERAWATAN IBU',
+            'k74' => 'KBY FISIO GD.IBU',
         ];
 
         return $serviceUnits[$kodeBagian] ?? null;
