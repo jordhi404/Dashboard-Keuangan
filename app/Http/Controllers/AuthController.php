@@ -36,8 +36,10 @@ class AuthController extends Controller
                     case 'k13':
                     case 'k14':
                     case 'k15':
-                    case 'k16': // Inpatient (Ranap)
-                    case 'k41': // Inpatient (Ranap)
+                    case 'k16': 
+                    case 'k41': 
+                    case 'k58': 
+                    case 'k59': // Inpatient (Ranap)
                         return redirect()->route('ranap');
                     default:
                         Auth::logout();
