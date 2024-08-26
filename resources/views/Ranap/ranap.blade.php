@@ -12,9 +12,12 @@
 <body>
     <div class="container">
         <div class="navbar d-flex">
-            <div class="d-flex flex-column">
-                <h1 class="mb-1">Pasien Rencana Pulang</h1>
-                <p class="mb-2"> Update terakhir: {{ now()->format('H:i:s') }}</p>
+            <div class="d-flex align-items-center justify-content-start">
+                <img src="{{ asset('Logo_img/hospital-bed.png') }}" alt="ranap" style="height: 80px; width: 75px; margin-right: 20px">
+                <div class="d-flex flex-column">
+                    <h1 class="mb-1">Pasien Rencana Pulang</h1>
+                    <p class="mb-2"> Update terakhir: {{ now()->format('H:i:s') }}</p>
+                </div>
             </div>
             <div class="nav ms-auto">
                 @auth
