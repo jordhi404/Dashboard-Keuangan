@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bed;
-use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -120,8 +119,21 @@ class RanapController extends Controller
     /* FUNCTION UNTUK MENAMPILKAN DATA DI DASHBOARD RANAP. */
     public function showdashboardRanap() {
 
+        // Assign ServiceUnitName berdasarkan kode_bagian pengguna yang sedang login
+        $user = Auth::user();
+        $serviceUnit = $this->getServiceUnit($user->kode_bagian);
+
         /* MENGAMBIL DATA PASIEN UNTUK DITAMPILKAN. */
-            $patients = $this->getPatientData();
+            // Mengambil data pasien untuk ditampilkan berdasarkan ServiceUnitName
+            if ($user->kode_bagian == 'k45') {
+                $patients = collect($this->getPatientData());
+            } else {
+                $patients = collect($this->getPatientData())->where('ServiceUnitName', $serviceUnit)
+                            ->filter(function ($patient) use ($serviceUnit) {
+                                return $patient->ServiceUnitName === $serviceUnit;
+                            });
+            }
+
             $currentTime = Carbon::now();
 
             foreach ($patients as $patient) {
@@ -200,7 +212,26 @@ class RanapController extends Controller
             'Pribadi' => 'lightblue',
         ];
 
+        //dd($patients);
+
         /* MENGIRIM DATA KE VIEW. */
         return view('Ranap.ranap', compact('groupedData', 'allPatients','customerTypeColors'));
+    }
+
+    // Fungsi untuk mendapatkan ServiceUnitName berdasarkan kode_bagian
+    protected function getServiceUnit($kodeBagian)
+    {
+        // Contoh mapping kode_bagian ke ServiceUnitName
+        $serviceUnits = [
+            'k13' => 'TJAN KHEE SWAN TIMUR',
+            'k14' => 'TJAN KHEE SWAN BARAT',
+            'k15' => 'UPI DEWASA',
+            'k16' => 'KWEE HAN TIONG',
+            'k41' => 'RUANG ASA',
+            'k58' => 'PERAWATAN ANAK',
+            'k59' => 'PERAWATAN IBU',
+        ];
+
+        return $serviceUnits[$kodeBagian] ?? null;
     }
 }

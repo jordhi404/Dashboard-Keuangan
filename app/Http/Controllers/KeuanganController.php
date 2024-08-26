@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bed;
-use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
