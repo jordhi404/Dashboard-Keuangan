@@ -16,7 +16,7 @@ class IsHK
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->kode_bagian !== 'k32') {
+        if (Auth::user()->kode_bagian !== 'k32' && Auth::user()->kode_bagian !== 'k45') {
             abort(403, 'You are not authorized to access this page.');
         }
         return $next($request);
