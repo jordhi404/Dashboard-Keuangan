@@ -103,9 +103,9 @@ class KeuanganController extends Controller
                     RencanaPulang,
                     NoteText,
                     CASE
-                        WHEN Keperawatan IS NOT NULL THEN 'Tunggu Keperawatan'
-                        WHEN TungguJangdik IS NOT NULL THEN 'Tunggu Jangdik'
-                        WHEN TungguFarmasi IS NOT NULL THEN 'Tunggu Farmasi'
+                        WHEN Keperawatan IS NOT NULL AND TungguJangdik IS NULL AND TungguFarmasi IS NOT NULL THEN 'Tunggu Keperawatan'
+                        WHEN TungguJangdik IS NOT NULL AND Keperawatan IS NOT NULL AND TungguFarmasi IS NOT NULL THEN 'Tunggu Jangdik'
+                        WHEN TungguFarmasi IS NOT NULL AND Keperawatan IS NULL AND TungguJangdik IS NULL THEN 'Tunggu Farmasi'
                         WHEN RegistrationStatus = 0 AND OutStanding > 0 AND SelesaiBilling IS NULL THEN 'Tunggu Kasir'
                         WHEN RegistrationStatus = 1 AND OutStanding = 0 AND SelesaiBilling IS NULL THEN 'Tunggu Kasir'
                         WHEN RegistrationStatus = 1 AND OutStanding = 0 AND SelesaiBilling IS NOT NULL THEN 'Selesai Kasir'
@@ -121,6 +121,15 @@ class KeuanganController extends Controller
         /* MENGAMBIL DATA PASIEN UNTUK DITAMPILKAN. */
             $patients = $this->getPatientData();
             $currentTime = Carbon::now();
+
+            // Mengelompokkan pasien berdasarkan keterangan
+            $groupedPatients = [
+                'Tunggu Keperawatan' => [],
+                'Tunggu Jangdik' => [],
+                'Tunggu Farmasi' => [],
+                'Tunggu Kasir' => [],
+                'Selesai Kasir' => []
+            ];
 
             foreach ($patients as $patient) {
                 // Patient's short note.
@@ -146,15 +155,27 @@ class KeuanganController extends Controller
                 }    
                 $patient->wait_time = $waitTime;
 
-                $standardWaitTimeInSeconds = 7200; // 2 hours
+                //$standardWaitTimeInSeconds = 7200; // 2 hours
                 if ($patient->Keterangan == 'Tunggu Obat Farmasi') {
                     $standardWaitTimeInSeconds = 3600; // 1 hour
-                } else if ($patient->Keterangan == 'Penyelesaian Administrasi Pasien (Billing)') {
+                } else{
                     $standardWaitTimeInSeconds = 900; // 15 minutes
                 }
 
                 $progressPercentage = min(($waitTimeInSeconds / $standardWaitTimeInSeconds) * 100, 100);
                 $patient->progress_percentage = $progressPercentage;
+
+                if (in_array($patient->Keterangan, ['Tunggu Keperawatan'])) {
+                    $groupedPatients['Tunggu Keperawatan'][] = $patient;
+                } elseif ($patient->Keterangan == 'Tunggu Jangdik') {
+                    $groupedPatients['Tunggu Jangdik'][] = $patient;
+                } elseif ($patient->Keterangan == 'Tunggu Farmasi') {
+                    $groupedPatients['Tunggu Farmasi'][] = $patient;
+                } elseif ($patient->Keterangan == 'Tunggu Kasir') {
+                    $groupedPatients['Tunggu Kasir'][] = $patient;
+                } elseif ($patient->Keterangan == 'Selesai Kasir') {
+                    $groupedPatients['Selesai Kasir'][] = $patient;
+                }
             }
 
         /* MEMBUAT URUTAN UNTUK TAMPILAN KOLOM KETERANGAN.*/
@@ -162,27 +183,6 @@ class KeuanganController extends Controller
             $groupedData = [];
             foreach ($patients as $data) {
                 $groupedData[$data->Keterangan][] = $data;
-            }
-
-            // Urutan kustom untuk 'keterangan'
-            $order = [
-                'Tunggu Jangdik',
-                'Tunggu Keperawatan',
-                'Tunggu Farmasi',
-                'Tunggu Kasir',
-                'Selesai Kasir'
-            ];
-
-            // Ambil data yang sudah dikelompokkan (groupedData)
-            $groupedData = collect($groupedData)->sortBy(function($patients, $keterangan) use ($order) {
-                return array_search($keterangan, $order);
-            })->toArray();
-
-            $allPatients = [];
-            foreach ($groupedData as $patients) {
-                foreach ($patients as $patient) {
-                    $allPatients[] = $patient;
-                }
             }
 
         /* WARNA HEADER KARTU BERDASARKAN customerType (PENJAMIN BAYAR). */
@@ -198,9 +198,7 @@ class KeuanganController extends Controller
             'Pribadi' => 'lightblue',
         ];
 
-        
-
         /* MENGIRIM DATA KE VIEW. */
-        return view('Keuangan.keuangan', compact('groupedData', 'allPatients','customerTypeColors'));
+        return view('Keuangan.keuangan', compact('patients', 'customerTypeColors', 'groupedPatients'));
     }
 }
