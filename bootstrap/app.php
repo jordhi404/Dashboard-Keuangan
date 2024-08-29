@@ -6,12 +6,16 @@ use Illuminate\Foundation\Configuration\Middleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        commands: __DIR__.'/../routes/console.php',
+        web: __DIR__ . '/../routes/web.php',
+        commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'hk' => App\Http\Middleware\IsHK::class,
+            'keuangan' => App\Http\Middleware\IsKeuangan::class,
+            'ranap' => App\Http\Middleware\IsRanap::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

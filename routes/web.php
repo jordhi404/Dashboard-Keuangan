@@ -16,14 +16,14 @@ Route::middleware(['web'])->group(function () {
     Route::middleware('auth', 'no-cache')->group(function () {
         Route::get('/', [DashboardController::class, 'showDashboard'])->name('dashboard');
 
-        Route::get('/keuangan', [KeuanganController::class, 'showDashboardKeuangan'])->name('keuangan');
+        Route::get('/keuangan', [KeuanganController::class, 'showDashboardKeuangan'])->name('keuangan')->middleware('keuangan');
 
-        Route::get('/ranap', [RanapController::class, 'showDashboardRanap'])->name('ranap');
+        Route::get('/ranap', [RanapController::class, 'showDashboardRanap'])->name('ranap')->middleware('ranap');
 
-        Route::get('/hk', [HKController::class, 'showDashboard'])->name('hk');
+        Route::get('/hk', [HKController::class, 'showDashboard'])->name('hk')->middleware('hk');
     });
 });
-       
+
 // Route::get('/test-sqlserver', function () {
 //     try {
 //         DB::connection('sqlsrv')->getPdo();
@@ -32,4 +32,3 @@ Route::middleware(['web'])->group(function () {
 //         die("Could not connect to the database. Error: " . $e->getMessage());
 //     }
 // });
-
