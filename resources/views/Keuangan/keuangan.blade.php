@@ -44,50 +44,202 @@
         </div>
     </div>
     <div class="content-container">
-        <div class="d-flex" style="gap: 20px;">
-            @foreach($groupedData as $keterangan => $patients)
-                <div class="content-column">
-                    <h3>{{ $keterangan }}</h3>
-                    <hr class="border-5">
-                    @foreach($patients as $patient)
-                        <div class="card">
-                            <div class="card-header" style="background-color: {{ $customerTypeColors[$patient->CustomerType] }};">
-                                <strong>{{ $patient->PatientName }} - {{ $patient->BedCode }}</strong>
-                            </div>
-                            <div class="card-body">
-                                <p>Medical No: {{ $patient->MedicalNo }}</p>
-                                <p>Rencana Pulang: {{ $patient->RencanaPulang }}</p>
-                                <p>
-                                    <strong>Note:</strong> {{ $patient->short_note }}
-                                    @if ($patient->NoteText !== null)
-                                        <a class="more-link"
-                                            data-bs-toggle="popover"
-                                            title="{{ $patient->PatientName }}'s Note"
-                                            data-bs-content="{{ $patient->NoteText }}">
-                                            selengkapnya
-                                        </a>
-                                    @endif
-                                </p>
-                                @if ($keterangan == 'Selesai Kasir')
-                                    <p><strong>Administrasi Selesai.</strong></p>
-                                @else
-                                    <p><strong>Wait Time:</strong><span id="wait-time-{{ $patient->MedicalNo }}"> {{ $patient->wait_time }} </span><br></p>
-                                    <div class="progress mb-2">
-                                        <div id="progress-bar-{{ $patient->MedicalNo }}" 
-                                            class="progress-bar {{ $patient->progress_percentage > 100 ? 'progress-bar-red' : 'progress-bar-blue' }}"
-                                            role="progressbar"
-                                            style="width: {{ $patient->progress_percentage }}%"
-                                            aria-valuenow="{{ $patient->progress_percentage }}"                                            
-                                            aria-valuemin="0"
-                                            aria-valuemax="100">
-                                        </div>
-                                    </div>
+        <div class="row">
+
+            <!-- Kolom Keperawatan -->
+            <div class="col">
+                <div class="header">
+                    <h3>Keperawatan</h3>
+                </div>
+                <hr class="border-5"/>
+                @foreach ($groupedPatients['Tunggu Keperawatan'] as $patient)
+                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
+                        <div class="card-header" style="background-color: {{ $customerTypeColors[$patient->CustomerType] }};">
+                            <strong>{{ $patient->PatientName }} - {{ $patient->BedCode }}</strong>
+                        </div>
+                        <div class="card-body">
+                            <p>Medical No: {{ $patient->MedicalNo }}</p>
+                            <p>Rencana Pulang: {{ $patient->RencanaPulang }}</p>
+                            <p>
+                                <strong>Note:</strong> {{ $patient->short_note }}
+                                @if ($patient->NoteText !== null)
+                                    <a class="more-link"
+                                        data-bs-toggle="popover"
+                                        title="{{ $patient->PatientName }}'s Note"
+                                        data-bs-content="{{ $patient->NoteText }}">
+                                        selengkapnya
+                                    </a>
                                 @endif
+                            </p>
+                            <p><strong>Wait Time:</strong><span id="wait-time-{{ $patient->MedicalNo }}"> {{ $patient->wait_time }}</span><br></p>
+                            <div class="progress mb-2">
+                                <div id="progress-bar-{{ $patient->MedicalNo }}" 
+                                    class="progress-bar {{ $patient->progress_percentage > 100 ? 'progress-bar-red' : 'progress-bar-blue' }}"
+                                    role="progressbar"
+                                    style="width: {{ $patient->progress_percentage }}%"
+                                    aria-valuenow="{{ $patient->progress_percentage }}"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100">
+                                </div>
                             </div>
                         </div>
-                    @endforeach 
+                    </div>    
+                @endforeach
+            </div>
+
+            <!-- Kolom Jangdik -->
+            <div class="col">
+                <div class="header">
+                    <h3>Tunggu Jangdik</h3>
                 </div>
-            @endforeach
+                <hr class="border-5"/>
+                @foreach ($groupedPatients['Tunggu Jangdik'] as $patient)
+                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
+                        <div class="card-header" style="background-color: {{ $customerTypeColors[$patient->CustomerType] }};">
+                            <strong>{{ $patient->PatientName }} - {{ $patient->BedCode }}</strong>
+                        </div>
+                        <div class="card-body">
+                            <p>Medical No: {{ $patient->MedicalNo }}</p>
+                            <p>Rencana Pulang: {{ $patient->RencanaPulang }}</p>
+                            <p>
+                                <strong>Note:</strong> {{ $patient->short_note }}
+                                @if ($patient->NoteText !== null)
+                                    <a class="more-link"
+                                        data-bs-toggle="popover"
+                                        title="{{ $patient->PatientName }}'s Note"
+                                        data-bs-content="{{ $patient->NoteText }}">
+                                        selengkapnya
+                                    </a>
+                                @endif
+                            </p>
+                            <p><strong>Wait Time:</strong><span id="wait-time-{{ $patient->MedicalNo }}"> {{ $patient->wait_time }}</span><br></p>
+                            <div class="progress mb-2">
+                                <div id="progress-bar-{{ $patient->MedicalNo }}" 
+                                    class="progress-bar {{ $patient->progress_percentage > 100 ? 'progress-bar-red' : 'progress-bar-blue' }}"
+                                    role="progressbar"
+                                    style="width: {{ $patient->progress_percentage }}%"
+                                    aria-valuenow="{{ $patient->progress_percentage }}"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100">
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+                @endforeach
+            </div>
+
+            <!-- Kolom Farmasi -->
+            <div class="col">
+                <div class="header">
+                    <h3>Tunggu Farmasi</h3>
+                </div>
+                <hr class="border-5"/>
+                @foreach ($groupedPatients['Tunggu Farmasi'] as $patient)
+                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
+                        <div class="card-header" style="background-color: {{ $customerTypeColors[$patient->CustomerType] }};">
+                            <strong>{{ $patient->PatientName }} - {{ $patient->BedCode }}</strong>
+                        </div>
+                        <div class="card-body">
+                            <p>Medical No: {{ $patient->MedicalNo }}</p>
+                            <p>Rencana Pulang: {{ $patient->RencanaPulang }}</p>
+                            <p>
+                                <strong>Note:</strong> {{ $patient->short_note }}
+                                @if ($patient->NoteText !== null)
+                                    <a class="more-link"
+                                        data-bs-toggle="popover"
+                                        title="{{ $patient->PatientName }}'s Note"
+                                        data-bs-content="{{ $patient->NoteText }}">
+                                        selengkapnya
+                                    </a>
+                                @endif
+                            </p>
+                            <p><strong>Wait Time:</strong><span id="wait-time-{{ $patient->MedicalNo }}"> {{ $patient->wait_time }}</span><br></p>
+                            <div class="progress mb-2">
+                                <div id="progress-bar-{{ $patient->MedicalNo }}" 
+                                    class="progress-bar {{ $patient->progress_percentage > 100 ? 'progress-bar-red' : 'progress-bar-blue' }}"
+                                    role="progressbar"
+                                    style="width: {{ $patient->progress_percentage }}%"
+                                    aria-valuenow="{{ $patient->progress_percentage }}"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100">
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+                @endforeach
+            </div>
+
+            <!-- Kolom Tunggu Kasir -->
+            <div class="col">
+                <div class="header">
+                    <h3>Tunggu Kasir</h3>
+                </div>
+                <hr class="border-5"/>
+                @foreach ($groupedPatients['Tunggu Kasir'] as $patient)
+                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
+                        <div class="card-header" style="background-color: {{ $customerTypeColors[$patient->CustomerType] }};">
+                            <strong>{{ $patient->PatientName }} - {{ $patient->BedCode }}</strong>
+                        </div>
+                        <div class="card-body">
+                            <p>Medical No: {{ $patient->MedicalNo }}</p>
+                            <p>Rencana Pulang: {{ $patient->RencanaPulang }}</p>
+                            <p>
+                                <strong>Note:</strong> {{ $patient->short_note }}
+                                @if ($patient->NoteText !== null)
+                                    <a class="more-link"
+                                        data-bs-toggle="popover"
+                                        title="{{ $patient->PatientName }}'s Note"
+                                        data-bs-content="{{ $patient->NoteText }}">
+                                        selengkapnya
+                                    </a>
+                                @endif
+                            </p>
+                            <p><strong>Wait Time:</strong><span id="wait-time-{{ $patient->MedicalNo }}"> {{ $patient->wait_time }}</span><br></p>
+                            <div class="progress mb-2">
+                                <div id="progress-bar-{{ $patient->MedicalNo }}" 
+                                    class="progress-bar {{ $patient->progress_percentage > 100 ? 'progress-bar-red' : 'progress-bar-blue' }}"
+                                    role="progressbar"
+                                    style="width: {{ $patient->progress_percentage }}%"
+                                    aria-valuenow="{{ $patient->progress_percentage }}"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100">
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+                @endforeach
+            </div>
+
+            <!-- Kolom Selesai Kasir -->
+            <div class="col">
+                <div class="header">
+                    <h3>Selesai Kasir</h3>
+                </div>
+                <hr class="border-5"/>
+                @foreach ($groupedPatients['Selesai Kasir'] as $patient)
+                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
+                        <div class="card-header" style="background-color: {{ $customerTypeColors[$patient->CustomerType] }};">
+                            <strong>{{ $patient->PatientName }} - {{ $patient->BedCode }}</strong>
+                        </div>
+                        <div class="card-body">
+                            <p>Medical No: {{ $patient->MedicalNo }}</p>
+                            <p>Rencana Pulang: {{ $patient->RencanaPulang }}</p>
+                            <p>
+                                <strong>Note:</strong> {{ $patient->short_note }}
+                                @if ($patient->NoteText !== null)
+                                    <a class="more-link"
+                                        data-bs-toggle="popover"
+                                        title="{{ $patient->PatientName }}'s Note"
+                                        data-bs-content="{{ $patient->NoteText }}">
+                                        selengkapnya
+                                    </a>
+                                @endif
+                            </p>
+                            <p><strong>Administrasi Selesai.</strong></p>
+                        </div>
+                    </div>    
+                @endforeach
+            </div>
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -96,7 +248,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        window.patients = @json($allPatients); // Error tidak perlu dikhawatirkan.
+        window.patients = @json($patients); // Error tidak perlu dikhawatirkan.
         console.log(window.patients);
     </script>
     <script src="{{ asset('JS/script.js') }}"></script>
