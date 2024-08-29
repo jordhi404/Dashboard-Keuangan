@@ -34,14 +34,6 @@ class RanapController extends Controller
                                 ELSE CAST(cv.PlanDischargeDate AS VARCHAR) + ' ' + CAST(cv.PlanDischargeTime AS VARCHAR)
                             END,
                         CatRencanaPulang = cv.PlanDischargeNotes,
-                        Keperawatan =
-                            (SELECT TOP 1 TransactionNo 
-                            FROM PatientChargesHD
-                            WHERE VisitID=cv.VisitID 
-                            AND GCTransactionStatus<>'X121^999' 
-                            AND GCTransactionStatus IN ('X121^001','X121^002','X121^003')
-                            AND HealthcareServiceUnitID NOT IN (82,83,99,138,140,101,137)
-                            ORDER BY TestOrderID ASC),
                         TungguJangdik = 
                             (SELECT TOP 1 TransactionNo 
                             FROM PatientChargesHD
@@ -49,6 +41,14 @@ class RanapController extends Controller
                             AND GCTransactionStatus<>'X121^999' 
                             AND GCTransactionStatus IN ('X121^001','X121^002','X121^003')
                             AND HealthcareServiceUnitID IN (82,83,99,138,140)
+                            ORDER BY TestOrderID ASC),
+                        Keperawatan =
+                            (SELECT TOP 1 TransactionNo 
+                            FROM PatientChargesHD
+                            WHERE VisitID=cv.VisitID 
+                            AND GCTransactionStatus<>'X121^999' 
+                            AND GCTransactionStatus IN ('X121^001','X121^002','X121^003')
+                            AND HealthcareServiceUnitID NOT IN (82,83,99,138,140,101,137)
                             ORDER BY TestOrderID ASC),
                         TungguFarmasi = 
                             (SELECT TOP 1 TransactionNo 
@@ -104,9 +104,9 @@ class RanapController extends Controller
                     RencanaPulang,
                     CatRencanaPulang,
                     CASE
-                        WHEN Keperawatan IS NOT NULL THEN 'Tunggu Keperawatan'
-                        WHEN TungguJangdik IS NOT NULL THEN 'Tunggu Jangdik'
-                        WHEN TungguFarmasi IS NOT NULL THEN 'Tunggu Farmasi'
+                        WHEN Keperawatan IS NOT NULL AND TungguJangdik IS NULL AND TungguFarmasi IS NOT NULL THEN 'Tunggu Keperawatan'
+                        WHEN TungguJangdik IS NOT NULL AND Keperawatan IS NOT NULL AND TungguFarmasi IS NOT NULL THEN 'Tunggu Jangdik'
+                        WHEN TungguFarmasi IS NOT NULL AND Keperawatan is NULL AND TungguJangdik is NULL THEN 'Tunggu Farmasi'
                         WHEN RegistrationStatus = 0 AND OutStanding > 0 AND SelesaiBilling IS NULL THEN 'Tunggu Kasir'
                         WHEN RegistrationStatus = 1 AND OutStanding = 0 AND SelesaiBilling IS NULL THEN 'Tunggu Kasir'
                         WHEN RegistrationStatus = 1 AND OutStanding = 0 AND SelesaiBilling IS NOT NULL THEN 'Selesai Kasir'
@@ -136,6 +136,15 @@ class RanapController extends Controller
 
             $currentTime = Carbon::now();
 
+            // Mengelompokkan pasien berdasarkan keterangan
+            $groupedPatients = [
+                'Tunggu Keperawatan' => [],
+                'Tunggu Jangdik' => [],
+                'Tunggu Farmasi' => [],
+                'Tunggu Kasir' => [],
+                'Selesai Kasir' => []
+            ];
+
             foreach ($patients as $patient) {
                 // Patient's short note.
                 $patient->short_note = $patient->CatRencanaPulang ? Str::limit($patient->CatRencanaPulang, 10) : '-';
@@ -160,15 +169,27 @@ class RanapController extends Controller
                 }    
                 $patient->wait_time = $waitTime;
 
-                $standardWaitTimeInSeconds = 7200; // 2 hours
-                if ($patient->Keterangan == 'Tunggu Obat Farmasi') {
+                // $standardWaitTimeInSeconds = 7200; // 2 hours
+                if ($patient->Keterangan == 'Tunggu Farmasi') {
                     $standardWaitTimeInSeconds = 3600; // 1 hour
-                } else if ($patient->Keterangan == 'Penyelesaian Administrasi Pasien (Billing)') {
+                } else{
                     $standardWaitTimeInSeconds = 900; // 15 minutes
                 }
 
                 $progressPercentage = min(($waitTimeInSeconds / $standardWaitTimeInSeconds) * 100, 100);
                 $patient->progress_percentage = $progressPercentage;
+
+                if (in_array($patient->Keterangan, ['Tunggu Keperawatan'])) {
+                    $groupedPatients['Tunggu Keperawatan'][] = $patient;
+                } elseif ($patient->Keterangan == 'Tunggu Jangdik') {
+                    $groupedPatients['Tunggu Jangdik'][] = $patient;
+                } elseif ($patient->Keterangan == 'Tunggu Farmasi') {
+                    $groupedPatients['Tunggu Farmasi'][] = $patient;
+                } elseif ($patient->Keterangan == 'Tunggu Kasir') {
+                    $groupedPatients['Tunggu Kasir'][] = $patient;
+                } elseif ($patient->Keterangan == 'Selesai Kasir') {
+                    $groupedPatients['Selesai Kasir'][] = $patient;
+                }
             }
 
         /* MEMBUAT URUTAN UNTUK TAMPILAN KOLOM KETERANGAN.*/
@@ -176,27 +197,6 @@ class RanapController extends Controller
             $groupedData = [];
             foreach ($patients as $data) {
                 $groupedData[$data->Keterangan][] = $data;
-            }
-
-            // Urutan kustom untuk 'keterangan'
-            $order = [
-                'Tunggu Jangdik',
-                'Tunggu Keperawatan',
-                'Tunggu Farmasi',
-                'Tunggu Kasir',
-                'Selesai Kasir'
-            ];
-
-            // Ambil data yang sudah dikelompokkan (groupedData)
-            $groupedData = collect($groupedData)->sortBy(function($patients, $keterangan) use ($order) {
-                return array_search($keterangan, $order);
-            })->toArray();
-
-            $allPatients = [];
-            foreach ($groupedData as $patients) {
-                foreach ($patients as $patient) {
-                    $allPatients[] = $patient;
-                }
             }
 
         /* WARNA HEADER KARTU BERDASARKAN customerType (PENJAMIN BAYAR). */
@@ -215,7 +215,7 @@ class RanapController extends Controller
         //dd($patients);
 
         /* MENGIRIM DATA KE VIEW. */
-        return view('Ranap.ranap', compact('groupedData', 'allPatients','customerTypeColors'));
+        return view('Ranap.ranap', compact('patients', 'customerTypeColors', 'groupedPatients'));
     }
 
     // Fungsi untuk mendapatkan ServiceUnitName berdasarkan kode_bagian
