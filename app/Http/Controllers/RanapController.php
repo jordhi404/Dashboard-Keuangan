@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
@@ -199,6 +200,13 @@ class RanapController extends Controller
                 $groupedData[$data->Keterangan][] = $data;
             }
 
+            $allPatients = [];
+            foreach ($groupedData as $patients) {
+                foreach ($patients as $patient) {
+                    $allPatients[] = $patient;
+                }
+            }
+
         /* WARNA HEADER KARTU BERDASARKAN customerType (PENJAMIN BAYAR). */
         $customerTypeColors = [
             'Rekanan' => 'orange',
@@ -212,10 +220,11 @@ class RanapController extends Controller
             'Pribadi' => 'lightblue',
         ];
 
-        //dd($patients);
+        // debugbar::info('user: ' . $user->name . ' - Bagian: ' . $serviceUnit);
+        // debugbar::info($patients);
 
         /* MENGIRIM DATA KE VIEW. */
-        return view('Ranap.ranap', compact('patients', 'customerTypeColors', 'groupedPatients'));
+        return view('Ranap.ranap', compact('patients', 'allPatients', 'customerTypeColors', 'groupedPatients'));
     }
 
     // Fungsi untuk mendapatkan ServiceUnitName berdasarkan kode_bagian
