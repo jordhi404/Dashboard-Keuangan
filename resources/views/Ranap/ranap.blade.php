@@ -53,7 +53,7 @@
                 </div>
                 <hr class="border-5"/>
                 @foreach ($groupedPatients['Tunggu Keperawatan'] as $patient)
-                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
+                    <div class="card">
                         <div class="card-header" style="background-color: {{ $customerTypeColors[$patient->CustomerType] }};">
                             <strong>{{ $patient->PatientName }} - {{ $patient->BedCode }}</strong>
                         </div>
@@ -94,7 +94,7 @@
                 </div>
                 <hr class="border-5"/>
                 @foreach ($groupedPatients['Tunggu Jangdik'] as $patient)
-                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
+                    <div class="card">
                         <div class="card-header" style="background-color: {{ $customerTypeColors[$patient->CustomerType] }};">
                             <strong>{{ $patient->PatientName }} - {{ $patient->BedCode }}</strong>
                         </div>
@@ -135,7 +135,7 @@
                 </div>
                 <hr class="border-5"/>
                 @foreach ($groupedPatients['Tunggu Farmasi'] as $patient)
-                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
+                    <div class="card">
                         <div class="card-header" style="background-color: {{ $customerTypeColors[$patient->CustomerType] }};">
                             <strong>{{ $patient->PatientName }} - {{ $patient->BedCode }}</strong>
                         </div>
@@ -176,7 +176,7 @@
                 </div>
                 <hr class="border-5"/>
                 @foreach ($groupedPatients['Tunggu Kasir'] as $patient)
-                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
+                    <div class="card">
                         <div class="card-header" style="background-color: {{ $customerTypeColors[$patient->CustomerType] }};">
                             <strong>{{ $patient->PatientName }} - {{ $patient->BedCode }}</strong>
                         </div>
@@ -217,7 +217,7 @@
                 </div>
                 <hr class="border-5"/>
                 @foreach ($groupedPatients['Selesai Kasir'] as $patient)
-                    <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
+                    <div class="card">
                         <div class="card-header" style="background-color: {{ $customerTypeColors[$patient->CustomerType] }};">
                             <strong>{{ $patient->PatientName }} - {{ $patient->BedCode }}</strong>
                         </div>
@@ -248,7 +248,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        window.patients = @json($patients); // Error tidak perlu dikhawatirkan.
+        window.patients = @json($allPatients); // Error tidak perlu dikhawatirkan.
         console.log(window.patients);
     </script>
     <script src="{{ asset('JS/script.js') }}"></script>
