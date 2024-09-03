@@ -56,6 +56,10 @@ body {
     border: 1px solid rgba( 255, 255, 255, 0.18 );
 }
 
+.col {
+    overflow: auto;
+}
+
 .card {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     width: 300px;
