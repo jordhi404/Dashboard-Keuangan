@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -20,7 +20,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $employee = User::where('username', $request->nik)->first();
+        $employee = Employee::where('username', $request->nik)->first();
 
         if($employee && $request -> password == '123456.')
         {
