@@ -27,9 +27,9 @@ class AuthController extends Controller
             Auth::login($employee);
             if (Auth::check()) {
                 switch (Auth::user()->kode_bagian) {
-                    case 'k45': // IT
+                    case 'k45' || 'os26': // IT
                         return redirect()->intended(route('dashboard'));
-                    case 'k2': // Keuangan
+                    case 'k2' || 'k67': // Keuangan
                         return redirect()->intended(route('keuangan'));
                     case 'k32': // Housekeeping
                         return redirect()->route('hk');
