@@ -55,7 +55,7 @@
         </div>
         <div class="content-container text-center">
             <div class="logo-container mt-5">
-                @if(Auth::user()->kode_bagian === 'k45')
+                @if(Auth::user()->kode_bagian === 'k45' || Auth::user()->kode_bagian === 'os26')
                     <a href="{{ route('keuangan') }}" class="logo-link">
                         <img src="{{ asset('Logo_img/money.png') }}" alt="Keuangan">
                         <p>Dashboard Keuangan</p>
@@ -68,7 +68,7 @@
                         <img src="{{ asset('Logo_img/hospital-bed.png') }}" alt="Ranap">
                         <p>Dashboard Ranap</p>
                     </a>
-                @elseif(Auth::user()->kode_bagian === 'k2')
+                @elseif(Auth::user()->kode_bagian === 'k2' || Auth::user()->kode_bagian === 'k67')
                     <a href="{{ route('keuangan') }}" class="logo-link">
                         <img src="{{ asset('Logo_img/money.png') }}" alt="Keuangan">
                         <p>Dashboard Keuangan</p>
