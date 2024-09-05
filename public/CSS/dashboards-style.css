@@ -1,3 +1,68 @@
+/* Untuk layar kecil seperti smartphone */
+@media (max-width: 600px) {
+    .container {
+        padding: 5px;
+    }
+    .card {
+        width: 100%; /* Kartu menggunakan seluruh lebar layar */
+        margin-bottom: 15px;
+    }
+}
+
+/* Untuk tablet atau layar medium */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .card {
+        width: 48%; /* Kartu dibagi menjadi dua kolom */
+        margin: 10px 1%;
+    }
+}
+
+/* Untuk layar besar seperti desktop */
+@media (min-width: 1025px) {
+    .card {
+        width: 30%; /* Kartu dibagi menjadi tiga kolom */
+        margin: 10px 1%;
+    }
+}
+
+/* Layar kecil */
+@media (max-width: 600px) {
+    .navbar, .content-container {
+        padding: 10px;
+    }
+    .container {
+        margin: 5px;
+    }
+}
+
+/* Layar besar */
+@media (min-width: 1025px) {
+    .navbar, .content-container {
+        padding: 20px;
+    }
+}
+
+/* Untuk layar kecil (mobile) */
+@media (max-width: 600px) {
+    .card {
+        width: 100%;
+    }
+}
+
+/* Untuk layar medium (tablet) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .card {
+        width: 48%;
+    }
+}
+
+/* Untuk layar besar (desktop) */
+@media (min-width: 1025px) {
+    .card {
+        width: 30%;
+    }
+}
+
 body {
     background: linear-gradient(60deg, rgb(77, 241, 143), rgb(186, 243, 106), rgb(77, 241, 143));
     font-family: Arial, sans-serif;
@@ -62,7 +127,7 @@ body {
 
 .card {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    width: 300px;
+    width: 100%;
     margin-bottom: 10px;
 }
 
