@@ -29,7 +29,7 @@ class AuthController extends Controller
                 switch (Auth::user()->kode_bagian) {
                     case 'k45' || 'os26' || 'k98': // IT, DIREKSI
                         return redirect()->intended(route('dashboard'));
-                    case 'k2' || 'k67': // Keuangan
+                    case 'k2' || 'k67' || 'os15': // Keuangan
                         return redirect()->intended(route('keuangan'));
                     case 'k32': // Housekeeping
                         return redirect()->route('hk');
@@ -39,7 +39,8 @@ class AuthController extends Controller
                     case 'k16': 
                     case 'k41': 
                     case 'k58': 
-                    case 'k59': // Inpatient (Ranap)
+                    case 'k59': 
+                    case 'os29': // Inpatient (Ranap)
                         return redirect()->route('ranap');
                     default:
                         Auth::logout();
