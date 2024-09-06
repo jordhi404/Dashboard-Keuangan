@@ -126,7 +126,7 @@ class RanapController extends Controller
 
         /* MENGAMBIL DATA PASIEN UNTUK DITAMPILKAN. */
             // Mengambil data pasien untuk ditampilkan berdasarkan ServiceUnitName
-            if ($user->kode_bagian == 'k45') {
+            if ($user->kode_bagian == 'k45' || $user->kode_bagian == 'k98' || $user->kode_bagian == 'os26') {
                 $patients = collect($this->getPatientData());
             } else {
                 $patients = collect($this->getPatientData())->where('ServiceUnitName', $serviceUnit)

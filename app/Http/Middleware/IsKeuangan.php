@@ -16,7 +16,7 @@ class IsKeuangan
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->kode_bagian !== 'k2' && Auth::user()->kode_bagian !== 'k45') {
+        if (Auth::user()->kode_bagian !== 'k2' && Auth::user()->kode_bagian !== 'k45' && Auth::user()->kode_bagian !== 'k67' && Auth::user()->kode_bagian !== 'os26' && Auth::user()->kode_bagian !== 'k98') {
             abort(403, 'You are not authorized to access this page.');
         }
         return $next($request);

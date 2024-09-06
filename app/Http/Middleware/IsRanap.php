@@ -25,6 +25,8 @@ class IsRanap
             case 'k45':
             case 'k58':
             case 'k59':
+            case 'os26':
+            case 'k98':
                 return $next($request);
             default:
                 abort(403, 'You are not authorized to access this page.');
