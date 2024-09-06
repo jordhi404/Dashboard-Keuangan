@@ -25,6 +25,7 @@ class IsRanap
             case 'k45':
             case 'k58':
             case 'k59':
+            case 'os29':
             case 'os26':
             case 'k98':
                 return $next($request);

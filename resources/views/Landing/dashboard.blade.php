@@ -68,12 +68,12 @@
                         <img src="{{ asset('Logo_img/hospital-bed.png') }}" alt="Ranap">
                         <p>Dashboard Ranap</p>
                     </a>
-                @elseif(Auth::user()->kode_bagian === 'k2' || Auth::user()->kode_bagian === 'k67')
+                @elseif(Auth::user()->kode_bagian === 'k2' || Auth::user()->kode_bagian === 'k67' || Auth::user()->kode_bagian === 'os15')
                     <a href="{{ route('keuangan') }}" class="logo-link">
                         <img src="{{ asset('Logo_img/money.png') }}" alt="Keuangan">
                         <p>Dashboard Keuangan</p>
                     </a>
-                @elseif(Auth::user()->kode_bagian === 'k13' || Auth::user()->kode_bagian === 'k14' || Auth::user()->kode_bagian === 'k15' || Auth::user()->kode_bagian === 'k16' || Auth::user()->kode_bagian === 'k41' || Auth::user()->kode_bagian === 'k58' || Auth::user()->kode_bagian === 'k59')
+                @elseif(Auth::user()->kode_bagian === 'k13' || Auth::user()->kode_bagian === 'k14' || Auth::user()->kode_bagian === 'k15' || Auth::user()->kode_bagian === 'k16' || Auth::user()->kode_bagian === 'k41' || Auth::user()->kode_bagian === 'k58' || Auth::user()->kode_bagian === 'k59' || Auth::user()->kode_bagian === 'os29')
                     <a href="{{ route('ranap') }}" class="logo-link">
                         <img src="{{ asset('Logo_img/hospital-bed.png') }}" alt="Ranap">
                         <p>Dashboard Ranap</p>
