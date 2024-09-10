@@ -46,13 +46,13 @@
     <div class="content-container">
         <div class="row">
 
-            <!-- Kolom Keperawatan -->
+            <!-- Kolom Jangdik -->
             <div class="col">
                 <div class="header">
-                    <h3>Keperawatan</h3>
+                    <h3>Tunggu Jangdik</h3>
                 </div>
                 <hr class="border-5"/>
-                @foreach ($groupedPatients['Tunggu Keperawatan'] as $patient)
+                @foreach ($groupedPatients['Tunggu Jangdik'] as $patient)
                     <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
                         <div class="card-header" style="background-color: {{ $customerTypeColors[$patient->CustomerType] }};">
                             <strong>{{ $patient->PatientName }} - {{ $patient->BedCode }}</strong>
@@ -87,13 +87,13 @@
                 @endforeach
             </div>
 
-            <!-- Kolom Jangdik -->
+            <!-- Kolom Keperawatan -->
             <div class="col">
                 <div class="header">
-                    <h3>Tunggu Jangdik</h3>
+                    <h3>Keperawatan</h3>
                 </div>
                 <hr class="border-5"/>
-                @foreach ($groupedPatients['Tunggu Jangdik'] as $patient)
+                @foreach ($groupedPatients['Tunggu Keperawatan'] as $patient)
                     <div class="card" id="patient-card-{{ $patient->MedicalNo }}">
                         <div class="card-header" style="background-color: {{ $customerTypeColors[$patient->CustomerType] }};">
                             <strong>{{ $patient->PatientName }} - {{ $patient->BedCode }}</strong>
